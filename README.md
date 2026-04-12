@@ -14,4 +14,4 @@ Things to add:
 * home server setup
 
 Documentation & Resources:
-https://github.com/Doc-Steve/dendritic-design-with-flake-parts
+Mostly copy-pasted from: https://github.com/Doc-Steve/dendritic-design-with-flake-parts
