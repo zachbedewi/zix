@@ -41,7 +41,7 @@
           shell = pkgs.zsh;
         };
 
-        home-manger.users."${username}" = {
+        home-manager.users."${username}" = {
           imports = [
             self.modules.homeManager."${username}"
           ];

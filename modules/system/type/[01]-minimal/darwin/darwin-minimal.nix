@@ -32,7 +32,7 @@
           "flakes"
         ];
 
-        extra-experimental-featuers = [
+        extra-experimental-features = [
           "build-time-fetch-tree" # enables build time flake inputs
           "parallel-eval" # enables parallel evaluation
         ];
@@ -57,7 +57,7 @@
         })
       ];
 
-      environment.systemPackages = with inputs.nix-darwin-packages.${pkgs.stdenv.hostPlatform.system}; [
+      environment.systemPackages = with inputs.nix-darwin.packages.${pkgs.stdenv.hostPlatform.system}; [
         darwin-option
         darwin-rebuild
         darwin-version

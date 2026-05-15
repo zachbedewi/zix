@@ -8,7 +8,7 @@
 
   flake-file.inputs = {
     determinate = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

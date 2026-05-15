@@ -6,7 +6,7 @@
   # Need to copy the desktop apps because otherwise spotlight does not find them.
   # https://gist.github.com/Jabb0/1b7ad92e8ab3065ac999c21edc23311f
 
-  flake.modules.darwind.system-minimal = {
+  flake.modules.darwin.system-minimal = {
     home-manager.sharedModules = [
       {
         home.activation = {
