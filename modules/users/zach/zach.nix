@@ -12,6 +12,7 @@
           # import modules
         ];
         users.users.zach = {
+          initialHashedPassword = "$y$j9T$SUoqmnYrMvbqVIgktm4rl.$vRED9fj6Kxqp/XEpHd4/TS/JIMcBZTeqTM6fcG5D8r2";
           group = "audio";
         };
       };
