@@ -5,8 +5,9 @@
 {
   flake.modules.nixos.eye-of-god = {
     imports = with inputs.self.modules.nixos; [
-      system-desktop
       systemd-boot
+      chrony
+      system-desktop
     ];
 
   };

@@ -11,6 +11,7 @@
 
       ssh
       firmware
+      networking
       cli-tools
     ];
   };
