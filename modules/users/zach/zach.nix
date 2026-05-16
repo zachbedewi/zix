@@ -30,6 +30,7 @@
         }:
         {
           imports = with self.modules.homeManager; [
+            gnome
             system-desktop
           ];
           home.packages = with pkgs; [
