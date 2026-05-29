@@ -4,7 +4,7 @@
 (setq user-full-name "Zach Bedewi")
 
 ;; --- Theme ---
-(setq doom-theme 'kanagawa)
+(setq doom-theme 'doom-one)
 
 ;; --- Fonts ---
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 13)
