@@ -140,7 +140,7 @@
         fi
 
         if [ -x "$DOOMBIN" ]; then
-          run "$DOOMBIN" --yes sync 2>&1 || true
+          run "$DOOMBIN" sync 2>&1 || true
           run "$DOOMBIN" env 2>&1 || true
         fi
       '';
