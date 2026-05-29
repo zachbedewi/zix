@@ -15,7 +15,10 @@
         taps = [ "d12frosted/emacs-plus" ];
         brews = [
           {
-            name = "emacs-plus@32";
+            name = "emacs-plus@30";
+            args = [
+              "with-imagemagick"
+            ];
           }
         ];
       };
