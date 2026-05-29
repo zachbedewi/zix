@@ -4,6 +4,10 @@
 {
   flake.modules.homeManager.aerospace =
     { pkgs, lib, ... }:
+    let
+      sketchybar = "${pkgs.sketchybar}/bin/sketchybar";
+      borders = "${pkgs.jankyborders}/bin/borders";
+    in
     lib.mkIf pkgs.stdenv.isDarwin {
       programs.aerospace = {
         enable = true;
@@ -17,14 +21,18 @@
           config-version = 2;
 
           after-startup-command = [
-            "exec-and-forget borders active_color=0xff7E9CD8 inactive_color=0x00000000 width=6.0 style=round"
-            "exec-and-forget sketchybar"
+            "exec-and-forget ${borders} active_color=0xff7E9CD8 inactive_color=0x00000000 width=6.0 style=round"
+            "exec-and-forget ${sketchybar}"
           ];
 
           exec-on-workspace-change = [
             "/bin/bash"
             "-c"
-            "sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE"
+            "${sketchybar} --trigger aerospace_workspace_change AEROSPACE_FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE AEROSPACE_PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE"
+          ];
+
+          on-focus-changed = [
+            "exec-and-forget ${sketchybar} --trigger aerospace_workspace_change AEROSPACE_FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE"
           ];
 
           on-focused-monitor-changed = [ "move-mouse monitor-lazy-center" ];

@@ -29,3 +29,11 @@ for sid in "${WORKSPACES[@]}"; do
       click_script="aerospace workspace $sid" \
       script="$PLUGIN_DIR/aerospace.sh $sid"
 done
+
+# Set initial state for the focused workspace
+FOCUSED=$(aerospace list-workspaces --focused 2>/dev/null)
+if [ -n "$FOCUSED" ]; then
+  sketchybar --set "space.$FOCUSED" \
+    background.drawing=on \
+    icon.color=$COLOR_BLUE
+fi
