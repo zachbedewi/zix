@@ -6,6 +6,7 @@
   # Darwin: install emacs-plus via Homebrew (native macOS build with all patches)
   flake.modules.darwin.emacs =
     {
+      lib,
       ...
     }:
     {
@@ -22,6 +23,12 @@
           }
         ];
       };
+
+      system.activationScripts.postActivation.text = lib.mkAfter ''
+        echo "Copying Emacs.app to /Applications..."
+        cp -r /opt/homebrew/opt/emacs-plus@30/Emacs.app /Applications/
+        cp -r "/opt/homebrew/opt/emacs-plus@30/Emacs Client.app" /Applications/
+      '';
     };
 
   # NixOS: apply emacs-overlay for pgtk build

@@ -34,7 +34,7 @@
         onActivation = {
           autoUpdate = true;
           upgrade = true;
-          cleanup = "zap";
+          cleanup = "uninstall";
         };
         taps = builtins.attrNames config.nix-homebrew.taps;
       };
