@@ -26,6 +26,7 @@
     imports = with inputs.self.modules.homeManager; [
       system-cli
       browser
+      kitty
     ];
   };
 }
