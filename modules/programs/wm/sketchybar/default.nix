@@ -19,7 +19,7 @@
         config = ''
           #!/bin/bash
 
-          export CONFIG_DIR="$HOME/.config/sketchybar"
+          # CONFIG_DIR is provided by sketchybar itself
           export PLUGIN_DIR="$CONFIG_DIR/plugins"
           export FONT_FACE="${fontFace}"
 
