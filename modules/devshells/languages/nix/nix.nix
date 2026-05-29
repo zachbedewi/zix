@@ -13,6 +13,7 @@
 
         packages = with pkgs; [
           nixd
+          nixfmt-rfc-style
           statix
           nix-diff
           nix-tree

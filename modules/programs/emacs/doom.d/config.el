@@ -85,6 +85,6 @@
         corfu-auto-prefix 1))
 
 ;; --- Nix ---
-(after! nix-mode
-  (setq nix-nixfmt-bin "nixfmt")
-  (setq lsp-nix-server 'nixd))
+(after! lsp-mode
+  (add-to-list 'lsp-disabled-clients 'nix-nil)
+  (setq lsp-nix-nixd-server-path "nixd"))
