@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Media / now playing item
 
 source "$CONFIG_DIR/colors.sh"

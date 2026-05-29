@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Front app item - shows the currently focused application
 
 source "$CONFIG_DIR/colors.sh"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Kanagawa color palette for sketchybar
 # https://github.com/rebelot/kanagawa.nvim
 

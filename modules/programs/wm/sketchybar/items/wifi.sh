@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # WiFi item
 
 source "$CONFIG_DIR/colors.sh"

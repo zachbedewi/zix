@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Clock item
 
 source "$CONFIG_DIR/colors.sh"

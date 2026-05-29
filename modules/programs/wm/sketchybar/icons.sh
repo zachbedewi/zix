@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Icon mappings for sketchybar items
 # Using $'\Uxxxxxxxx' syntax so codepoints are explicit and editor-safe
 

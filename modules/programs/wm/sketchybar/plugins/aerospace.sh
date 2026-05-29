@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Aerospace workspace change handler
 # Called with workspace ID as $1
 # Env vars from trigger: FOCUSED_WORKSPACE, PREV_WORKSPACE

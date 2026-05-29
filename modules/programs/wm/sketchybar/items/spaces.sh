@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Aerospace workspace items for sketchybar
 
 source "$CONFIG_DIR/colors.sh"

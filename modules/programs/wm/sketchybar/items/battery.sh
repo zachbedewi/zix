@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Battery item
 
 source "$CONFIG_DIR/colors.sh"

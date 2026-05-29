@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Battery updater
 
 source "$CONFIG_DIR/colors.sh"

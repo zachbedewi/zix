@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Volume item
 
 source "$CONFIG_DIR/colors.sh"

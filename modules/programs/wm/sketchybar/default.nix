@@ -19,6 +19,9 @@
         config = ''
           #!/bin/bash
 
+          # Ensure plugin scripts inherit a PATH that includes nix-managed binaries
+          export PATH="/etc/profiles/per-user/$USER/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:$PATH"
+
           # CONFIG_DIR is provided by sketchybar itself
           export PLUGIN_DIR="$CONFIG_DIR/plugins"
           export FONT_FACE="${fontFace}"
