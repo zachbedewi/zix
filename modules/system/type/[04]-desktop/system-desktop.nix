@@ -29,6 +29,11 @@
       kitty
       starship
       direnv
+
+      # Darwin window management (no-op on Linux via lib.mkIf)
+      aerospace
+      sketchybar
+      jankyborders
     ];
   };
 }

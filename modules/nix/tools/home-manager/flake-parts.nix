@@ -7,9 +7,7 @@
 
   flake-file.inputs = {
     home-manager = {
-      # uncomment preference
-      #url = "github:nix-community/home-manager/master";
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

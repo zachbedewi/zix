@@ -25,7 +25,7 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     homebrew-cask = {
@@ -45,12 +45,11 @@
       flake = false;
     };
     nix-darwin = {
-      url = "github:LnL7/nix-darwin/nix-darwin-25.11";
-      inputs.nixpkgs.follows = "nixpkgs-darwin";
+      url = "github:LnL7/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
-    nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
