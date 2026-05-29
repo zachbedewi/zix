@@ -86,4 +86,5 @@
 
 ;; --- Nix ---
 (after! nix-mode
-  (setq nix-nixfmt-bin "nixfmt"))
+  (setq nix-nixfmt-bin "nixfmt")
+  (setq lsp-nix-server 'nixd))
