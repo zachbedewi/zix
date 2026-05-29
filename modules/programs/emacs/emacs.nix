@@ -3,13 +3,30 @@
   ...
 }:
 {
-  # System-level modules apply the overlay so pkgs include emacs-overlay packages.
-  # Required because home-manager uses useGlobalPkgs = true.
-  flake.modules.nixos.emacs = {
-    nixpkgs.overlays = [ inputs.self.overlays.emacs ];
-  };
+  # Darwin: install emacs-plus via Homebrew (native macOS build with all patches)
+  flake.modules.darwin.emacs =
+    {
+      ...
+    }:
+    {
+      nix-homebrew.taps."d12frosted/homebrew-emacs-plus" = inputs.homebrew-emacs-plus;
 
-  flake.modules.darwin.emacs = {
+      homebrew = {
+        taps = [ "d12frosted/emacs-plus" ];
+        brews = [
+          {
+            name = "emacs-plus@30";
+            args = [
+              "with-native-comp"
+              "with-modern-icon"
+            ];
+          }
+        ];
+      };
+    };
+
+  # NixOS: apply emacs-overlay for pgtk build
+  flake.modules.nixos.emacs = {
     nixpkgs.overlays = [ inputs.self.overlays.emacs ];
   };
 
@@ -21,15 +38,13 @@
       ...
     }:
     let
-      emacsPackage = if pkgs.stdenv.isDarwin then pkgs.emacs-doom-darwin else pkgs.emacs-git-pgtk;
-
       flakeRoot = "${config.home.homeDirectory}/dev/zix";
     in
     {
-
-      programs.emacs = {
+      # Linux only: nix-managed Emacs with pre-built C packages
+      programs.emacs = lib.mkIf pkgs.stdenv.isLinux {
         enable = true;
-        package = emacsPackage;
+        package = pkgs.emacs-git-pgtk;
         extraPackages =
           epkgs: with epkgs; [
             vterm
@@ -81,6 +96,11 @@
           # Misc
           html-tidy
           jq
+
+          # Build deps for Doom packages that compile C (vterm, pdf-tools, tree-sitter)
+          cmake
+          libtool
+          pkg-config
         ]
         ++ lib.optionals pkgs.stdenv.isDarwin [
           coreutils

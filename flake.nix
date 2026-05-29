@@ -44,6 +44,10 @@
       url = "github:homebrew/homebrew-core";
       flake = false;
     };
+    homebrew-emacs-plus = {
+      url = "github:d12frosted/homebrew-emacs-plus";
+      flake = false;
+    };
     import-tree = {
       url = "github:vic/import-tree";
       inputs.nixpkgs.follows = "nixpkgs";

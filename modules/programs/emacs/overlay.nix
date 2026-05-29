@@ -8,22 +8,11 @@
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    homebrew-emacs-plus = {
+      url = "github:d12frosted/homebrew-emacs-plus";
+      flake = false;
+    };
   };
 
-  flake.overlays.emacs =
-    final: prev:
-    let
-      emacsOverlay = inputs.emacs-overlay.overlays.default final prev;
-    in
-    emacsOverlay
-    // {
-      emacs-doom-darwin = emacsOverlay.emacs-unstable.overrideAttrs (old: {
-        patches = (old.patches or [ ]) ++ [
-          (prev.fetchurl {
-            url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-28/fix-window-role.patch";
-            hash = "sha256-H4Qj6n5uZsmsbdjjexGZctqhJk3gAXKiSnmnEO/LgTA=";
-          })
-        ];
-      });
-    };
+  flake.overlays.emacs = inputs.emacs-overlay.overlays.default;
 }
