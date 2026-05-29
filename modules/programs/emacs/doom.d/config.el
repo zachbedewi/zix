@@ -78,6 +78,12 @@
             latex-mode
             org-msg-edit-mode))
 
+;; --- Completion ---
+(after! corfu
+  (setq corfu-auto t
+        corfu-auto-delay 0.2
+        corfu-auto-prefix 1))
+
 ;; --- Nix ---
 (after! nix-mode
   (setq nix-nixfmt-bin "nixfmt"))

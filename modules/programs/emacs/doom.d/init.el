@@ -3,6 +3,7 @@
 (doom! :input
 
        :completion
+       (corfu +orderless +icons)
        (vertico +icons)
 
        :ui

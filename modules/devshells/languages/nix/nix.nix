@@ -12,7 +12,6 @@
         inputsFrom = [ config.devShells.base ];
 
         packages = with pkgs; [
-          nil
           nixd
           statix
           nix-diff
