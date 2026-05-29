@@ -130,7 +130,7 @@
               fd
             ]
           )
-        }:$PATH"
+        }:/opt/homebrew/bin:$PATH"
         EMACSDIR="$HOME/.config/emacs"
         DOOMBIN="$EMACSDIR/bin/doom"
 
