@@ -3,5 +3,5 @@
   ...
 }:
 {
-  flake.nixosConfigurations = inputs.self.lib.mkNixos "x86_64-linux" "eye-of-god";
+  flake.nixosConfigurations = inputs.self.lib.mkNixos "x86_64-linux" "eye-of-god" { };
 }

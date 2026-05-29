@@ -3,5 +3,5 @@
   ...
 }:
 {
-  flake.homeConfigurations = inputs.self.lib.mkHomeManager "x86_64-linux" "zach";
+  flake.homeConfigurations = inputs.self.lib.mkHomeManager "x86_64-linux" "zach" { };
 }
