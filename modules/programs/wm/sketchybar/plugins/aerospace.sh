@@ -1,19 +1,22 @@
 #!/usr/bin/env bash
-# Aerospace workspace change handler
-# Called with workspace ID as $1
-# Env vars from trigger: AEROSPACE_FOCUSED_WORKSPACE, AEROSPACE_PREV_WORKSPACE
 
 source "$CONFIG_DIR/colors.sh"
 source "$CONFIG_DIR/icons.sh"
 
 SID="$1"
 
+# If no focused workspace info from the event, query aerospace directly
+if [ -z "$AEROSPACE_FOCUSED_WORKSPACE" ]; then
+  AEROSPACE_FOCUSED_WORKSPACE=$(aerospace list-workspaces --focused 2>/dev/null)
+fi
+
 APPS="$(aerospace list-windows --workspace "$SID" --format '%{app-name}' 2>/dev/null)"
 APP_ICONS=""
 
 while IFS= read -r app; do
+  [ -z "$app" ] && continue
   icon="$(icon_for_app "$app")"
-  [ -n "$icon" ] && APP_ICONS+="$icon "
+  APP_ICONS+="${icon} "
 done <<< "$APPS"
 
 APP_ICONS="${APP_ICONS% }"

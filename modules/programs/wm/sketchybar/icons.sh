@@ -31,7 +31,7 @@ icon_for_app() {
     Notes)                                           icon=$'\U000f039a' ;;    # nf-md-note
     Preview)                                         icon=$'\U000f0570' ;;    # nf-md-image
     "Claude Code")                                   icon=$'\U000f110b' ;;    # nf-md-robot
-    *)                                               [ -n "$1" ] && icon=$'\U000f02d6' ;;  # nf-md-application
+    *)                                               [ -n "$1" ] && icon=$'\U000000b7' ;;  # middle dot
   esac
   echo "$icon"
 }
