@@ -1,0 +1,90 @@
+;;; config.el -*- lexical-binding: t; -*-
+
+;; --- Identity ---
+(setq user-full-name "Zach Bedewi")
+
+;; --- Theme ---
+(setq doom-theme 'kanagawa)
+
+;; --- Fonts ---
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 13)
+      doom-variable-pitch-font (font-spec :family "Inter" :size 14)
+      doom-big-font (font-spec :family "JetBrainsMono Nerd Font" :size 20))
+
+;; --- General ---
+(setq display-line-numbers-type 'relative
+      scroll-margin 8
+      which-key-idle-delay 0.3
+      undo-limit 80000000
+      evil-want-fine-undo t
+      truncate-string-ellipsis "…"
+      confirm-kill-emacs nil)
+
+;; --- macOS ---
+(when (eq system-type 'darwin)
+  (setq mac-option-modifier 'meta
+        mac-command-modifier 'super
+        ns-use-thin-smoothing t
+        browse-url-browser-function #'browse-url-default-macosx-browser)
+
+  (when (boundp 'ns-system-appearance-change-functions)
+    (add-hook 'ns-system-appearance-change-functions
+              (lambda (appearance)
+                (pcase appearance
+                  ('dark (load-theme 'kanagawa t))
+                  ('light (load-theme 'kanagawa-lotus t)))))))
+
+;; --- Projectile ---
+(setq projectile-project-search-path '(("~/dev" . 1)))
+
+;; --- Org ---
+(setq org-directory "~/org/"
+      org-roam-directory "~/org/roam/")
+
+(after! org
+  (setq org-startup-folded 'content
+        org-ellipsis " ▾"
+        org-hide-emphasis-markers t
+        org-log-done 'time
+        org-log-into-drawer t))
+
+(after! org-modern
+  (global-org-modern-mode))
+
+;; --- LSP ---
+(after! lsp-mode
+  (setq lsp-idle-delay 0.5
+        lsp-log-io nil
+        lsp-headerline-breadcrumb-enable t))
+
+(after! lsp-ui
+  (setq lsp-ui-doc-enable t
+        lsp-ui-doc-show-with-cursor nil
+        lsp-ui-doc-show-with-mouse t
+        lsp-ui-sideline-show-diagnostics t
+        lsp-ui-sideline-show-code-actions t))
+
+;; --- Tree-sitter ---
+(setq +tree-sitter-hl-enabled-modes t)
+
+;; --- Magit ---
+(after! magit
+  (setq magit-save-repository-buffers 'dontask
+        magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+
+;; --- Vterm ---
+(after! vterm
+  (setq vterm-max-scrollback 10000
+        vterm-timer-delay 0.01))
+
+;; --- Format ---
+(setq +format-on-save-enabled-modes
+      '(not emacs-lisp-mode
+            sql-mode
+            tex-mode
+            latex-mode
+            org-msg-edit-mode))
+
+;; --- Nix ---
+(after! nix-mode
+  (setq nix-nixfmt-bin "nixfmt"))

@@ -16,6 +16,10 @@
         nixpkgs.follows = "nixpkgs";
       };
     };
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     flake-file = {
       url = "github:vic/flake-file";
       inputs.nixpkgs-lib.follows = "nixpkgs";

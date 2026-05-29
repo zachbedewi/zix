@@ -9,6 +9,7 @@
     imports = with inputs.self.modules.nixos; [
       system-cli
       fonts
+      emacs
     ];
   };
 
@@ -16,6 +17,7 @@
     imports = with inputs.self.modules.darwin; [
       system-cli
       fonts
+      emacs
 
       dock
       finder
@@ -29,6 +31,7 @@
       kitty
       starship
       direnv
+      emacs
 
       # Darwin window management (no-op on Linux via lib.mkIf)
       aerospace
