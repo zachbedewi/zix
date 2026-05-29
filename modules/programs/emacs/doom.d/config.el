@@ -50,6 +50,10 @@
         lsp-log-io nil
         lsp-headerline-breadcrumb-enable t))
 
+(after! lsp-treemacs
+  (setq lsp-treemacs-symbols-position-params
+        '((side . right) (slot . 1) (window-width . 35))))
+
 (after! lsp-ui
   (setq lsp-ui-doc-enable t
         lsp-ui-doc-show-with-cursor nil
