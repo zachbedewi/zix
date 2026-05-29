@@ -1,0 +1,23 @@
+default:
+    @just --list
+
+fmt:
+    treefmt
+
+check:
+    treefmt --fail-on-change
+
+lint:
+    statix check .
+
+fix:
+    statix fix .
+
+build:
+    nix build
+
+update:
+    nix flake update
+
+show:
+    nix flake show

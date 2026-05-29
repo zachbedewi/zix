@@ -1,0 +1,32 @@
+default:
+    @just --list
+
+fmt:
+    treefmt
+
+check:
+    treefmt --fail-on-change
+
+test *args:
+    pytest {{args}}
+
+test-cov:
+    pytest --cov=src --cov-report=html
+
+lint:
+    ruff check .
+
+fix:
+    ruff check --fix .
+
+typecheck:
+    mypy src
+
+run *args:
+    python -m src.main {{args}}
+
+sync:
+    uv sync
+
+add *packages:
+    uv add {{packages}}
