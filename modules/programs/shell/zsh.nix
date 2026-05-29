@@ -131,9 +131,11 @@
           drs = "darwin-rebuild switch --flake .";
 
           # System / Navigation
-          ll = "ls -lah";
-          la = "ls -la";
-          lt = "ls -lt";
+          ls = "eza";
+          ll = "eza --long --all --group";
+          la = "eza --long --all";
+          lt = "eza --long --sort=modified";
+          tree = "eza --tree";
           ".." = "cd ..";
           "..." = "cd ../..";
           "...." = "cd ../../..";

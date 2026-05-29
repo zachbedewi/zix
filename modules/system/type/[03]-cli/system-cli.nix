@@ -30,6 +30,7 @@
       system-default
 
       zsh
+      eza
       git
     ];
   };
