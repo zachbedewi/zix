@@ -25,14 +25,7 @@
   (setq mac-option-modifier 'meta
         mac-command-modifier 'super
         ns-use-thin-smoothing t
-        browse-url-browser-function #'browse-url-default-macosx-browser)
-
-  (when (boundp 'ns-system-appearance-change-functions)
-    (add-hook 'ns-system-appearance-change-functions
-              (lambda (appearance)
-                (pcase appearance
-                  ('dark (load-theme 'kanagawa t))
-                  ('light (load-theme 'kanagawa-lotus t)))))))
+        browse-url-browser-function #'browse-url-default-macosx-browser))
 
 ;; --- Projectile ---
 (setq projectile-project-search-path '(("~/dev" . 1)))
