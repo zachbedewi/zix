@@ -1,2 +1,5 @@
 .claude
 docs
+.pre-commit-config.yaml
+.direnv/
+result
