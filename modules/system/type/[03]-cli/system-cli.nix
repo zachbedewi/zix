@@ -29,7 +29,7 @@
     imports = with inputs.self.modules.homeManager; [
       system-default
 
-      shell
+      zsh
       git
     ];
   };

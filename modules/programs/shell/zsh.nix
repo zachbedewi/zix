@@ -1,0 +1,241 @@
+{
+  ...
+}:
+{
+  flake.modules.homeManager.zsh =
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
+    {
+      programs.zsh = {
+        enable = true;
+        dotDir = "${config.xdg.configHome}/zsh";
+        enableCompletion = true;
+        defaultKeymap = "viins";
+        autocd = true;
+
+        history = {
+          size = 55000;
+          save = 50000;
+          extended = true;
+          share = true;
+          ignoreDups = true;
+          ignoreAllDups = true;
+          ignoreSpace = true;
+          expireDuplicatesFirst = true;
+          saveNoDups = true;
+          findNoDups = true;
+        };
+
+        setOptions = [
+          "AUTO_CD"
+          "AUTO_PUSHD"
+          "PUSHD_IGNORE_DUPS"
+          "PUSHD_SILENT"
+          "EXTENDED_GLOB"
+          "GLOB_DOTS"
+          "NO_CASE_GLOB"
+          "NUMERIC_GLOB_SORT"
+          "INTERACTIVE_COMMENTS"
+          "NO_BEEP"
+          "NO_FLOW_CONTROL"
+          "CORRECT"
+          "COMPLETE_IN_WORD"
+          "ALWAYS_TO_END"
+          "AUTO_MENU"
+          "LIST_PACKED"
+          "NO_CLOBBER"
+          "PIPE_FAIL"
+          "PROMPT_SUBST"
+          "TRANSIENT_RPROMPT"
+        ];
+
+        autosuggestion = {
+          enable = true;
+          strategy = [
+            "history"
+            "completion"
+          ];
+          highlight = "fg=8";
+        };
+
+        historySubstringSearch = {
+          enable = true;
+          searchUpKey = [ "^[[A" ];
+          searchDownKey = [ "^[[B" ];
+        };
+
+        plugins = [
+          {
+            name = "fast-syntax-highlighting";
+            src = pkgs.zsh-fast-syntax-highlighting;
+            file = "share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh";
+          }
+          {
+            name = "fzf-tab";
+            src = pkgs.zsh-fzf-tab;
+            file = "share/fzf-tab/fzf-tab.plugin.zsh";
+          }
+          {
+            name = "zsh-vi-mode";
+            src = pkgs.zsh-vi-mode;
+            file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
+          }
+          {
+            name = "you-should-use";
+            src = pkgs.zsh-you-should-use;
+            file = "share/zsh/plugins/you-should-use/you-should-use.plugin.zsh";
+          }
+          {
+            name = "zsh-autopair";
+            src = pkgs.zsh-autopair;
+            file = "share/zsh/zsh-autopair/autopair.zsh";
+          }
+          {
+            name = "forgit";
+            src = pkgs.zsh-forgit;
+            file = "share/zsh/zsh-forgit/forgit.plugin.zsh";
+          }
+        ];
+
+        shellAliases = {
+          # Git
+          gs = "git status";
+          ga = "git add";
+          gaa = "git add --all";
+          gc = "git commit";
+          gcm = "git commit -m";
+          gp = "git push";
+          gpl = "git pull";
+          gd = "git diff";
+          gds = "git diff --staged";
+          gl = "git log --oneline --graph --decorate";
+          gco = "git checkout";
+          gcb = "git checkout -b";
+          gb = "git branch";
+          gst = "git stash";
+          gstp = "git stash pop";
+
+          # Nix
+          nr = "nix run";
+          nb = "nix build";
+          nd = "nix develop";
+          nfu = "nix flake update";
+          nfc = "nix flake check";
+          nfs = "nix flake show";
+          nrs = "sudo nixos-rebuild switch --flake .";
+          nrt = "sudo nixos-rebuild test --flake .";
+          drs = "darwin-rebuild switch --flake .";
+
+          # System / Navigation
+          ll = "ls -lah";
+          la = "ls -la";
+          lt = "ls -lt";
+          ".." = "cd ..";
+          "..." = "cd ../..";
+          "...." = "cd ../../..";
+          "....." = "cd ../../../..";
+        };
+
+        initContent = lib.mkMerge [
+          (lib.mkOrder 600 ''
+            # Completion system styling
+            zstyle ':completion:*' completer _extensions _complete _approximate
+            zstyle ':completion:*' use-cache on
+            zstyle ':completion:*' cache-path "''${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
+            zstyle ':completion:*' menu select
+            zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+            zstyle ':completion:*' group-name ""
+            zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
+            zstyle ':completion:*:corrections' format '%F{green}-- %d (errors: %e) --%f'
+            zstyle ':completion:*:warnings' format '%F{red}-- no matches found --%f'
+            zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"
+            zstyle ':completion:*' squeeze-slashes true
+            zstyle ':completion:*' special-dirs true
+            zstyle ':completion:*:approximate:*' max-errors 'reply=($(( ($#PREFIX+$#SUFFIX)/3 )) numeric)'
+            zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+            zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
+
+            # Vi-mode menu navigation
+            zmodload zsh/complist
+            bindkey -M menuselect 'h' vi-backward-char
+            bindkey -M menuselect 'j' vi-down-line-or-history
+            bindkey -M menuselect 'k' vi-up-line-or-history
+            bindkey -M menuselect 'l' vi-forward-char
+            bindkey -M menuselect '^[[Z' reverse-menu-complete
+          '')
+
+          ''
+            # Keep useful emacs bindings accessible in vi-mode
+            bindkey '^A' beginning-of-line
+            bindkey '^E' end-of-line
+            bindkey '^W' backward-kill-word
+
+            # Edit command in $EDITOR
+            autoload -Uz edit-command-line
+            zle -N edit-command-line
+            bindkey '^X^E' edit-command-line
+
+            # KEYTIMEOUT for snappy vi-mode escape
+            export KEYTIMEOUT=1
+
+            # Report time for long-running commands
+            REPORTTIME=10
+
+            # Named directory hashes
+            hash -d dev=$HOME/dev
+            hash -d dl=$HOME/Downloads
+
+            # Directory stack size
+            DIRSTACKSIZE=20
+
+            # mkcd function
+            function mkcd() { mkdir -p "$1" && cd "$1" }
+          ''
+        ];
+      };
+
+      programs.fzf = {
+        enable = true;
+        enableZshIntegration = true;
+        defaultOptions = [
+          "--height=40%"
+          "--layout=reverse"
+          "--border"
+          "--info=inline"
+        ];
+        colors = {
+          fg = "#DCD7BA";
+          bg = "#1F1F28";
+          hl = "#7E9CD8";
+          "fg+" = "#DCD7BA";
+          "bg+" = "#2D4F67";
+          "hl+" = "#7FB4CA";
+          info = "#7AA89F";
+          prompt = "#98BB6C";
+          pointer = "#957FB8";
+          marker = "#E6C384";
+          spinner = "#957FB8";
+          header = "#7E9CD8";
+        };
+      };
+
+      programs.zoxide = {
+        enable = true;
+        enableZshIntegration = true;
+      };
+
+      programs.bash = {
+        enable = true;
+        enableCompletion = true;
+      };
+
+      home.packages = with pkgs; [
+        zsh-completions
+        any-nix-shell
+      ];
+    };
+}

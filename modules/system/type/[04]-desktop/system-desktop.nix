@@ -27,6 +27,8 @@
       system-cli
       browser
       kitty
+      starship
+      direnv
     ];
   };
 }
