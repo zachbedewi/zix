@@ -68,23 +68,53 @@
           # ─── AEROSPACE WORKSPACES ───
           sketchybar --add event aerospace_workspace_change
 
-          for sid in $(aerospace list-workspaces --all); do
+          WORKSPACES=("T" "W" "C" "D" "M" "1" "2" "3" "4" "5")
+
+          declare -A WORKSPACE_ICONS
+          WORKSPACE_ICONS=(
+            [T]=""
+            [W]="󰖟"
+            [C]=""
+            [D]="󰈙"
+            [M]="󰝚"
+            [1]="1"
+            [2]="2"
+            [3]="3"
+            [4]="4"
+            [5]="5"
+          )
+
+          for sid in "''${WORKSPACES[@]}"; do
             sketchybar --add item space.$sid left \
               --subscribe space.$sid aerospace_workspace_change \
               --set space.$sid \
                 background.color=$COLOR_SURFACE \
                 background.corner_radius=6 \
-                background.height=24 \
+                background.height=26 \
                 background.drawing=off \
-                icon.drawing=off \
-                label="$sid" \
+                icon="''${WORKSPACE_ICONS[$sid]}" \
+                icon.color=$COLOR_MUTED \
+                icon.font="JetBrainsMono Nerd Font:Bold:15.0" \
+                icon.padding_left=8 \
+                icon.padding_right=4 \
+                label="" \
                 label.color=$COLOR_DIM \
-                label.font="JetBrainsMono Nerd Font:Bold:13.0" \
-                label.padding_left=8 \
+                label.font="JetBrainsMono Nerd Font:Regular:12.0" \
+                label.padding_left=0 \
                 label.padding_right=8 \
                 click_script="aerospace workspace $sid" \
                 script="$PLUGIN_DIR/aerospace.sh $sid"
           done
+
+          # ─── SEPARATOR ───
+          sketchybar --add item separator left \
+            --set separator \
+              icon="│" \
+              icon.color=$COLOR_MUTED \
+              icon.padding_left=6 \
+              icon.padding_right=6 \
+              label.drawing=off \
+              background.drawing=off
 
           # ─── FRONT APP ───
           sketchybar --add item front_app left \
@@ -153,10 +183,50 @@
           executable = true;
           text = ''
             #!/bin/bash
-            if [ "$1" = "$FOCUSED_WORKSPACE" ]; then
-              sketchybar --set "$NAME" background.drawing=on label.color=0xffDCD7BA
+            SID="$1"
+
+            # Get apps in this workspace
+            APPS="$(aerospace list-windows --workspace "$SID" --format '%{app-name}' 2>/dev/null)"
+            APP_ICONS=""
+
+            while IFS= read -r app; do
+              case "$app" in
+                kitty|Alacritty|Terminal|iTerm2|WezTerm) APP_ICONS+=" " ;;
+                Firefox|Safari|Chrome|Arc|Zen*) APP_ICONS+="󰖟 " ;;
+                Code|Cursor|Zed|IntelliJ*|WebStorm*) APP_ICONS+=" " ;;
+                Finder) APP_ICONS+="󰀶 " ;;
+                Slack) APP_ICONS+="󰒱 " ;;
+                Discord) APP_ICONS+="󰙯 " ;;
+                Spotify|Music) APP_ICONS+="󰝚 " ;;
+                Messages) APP_ICONS+="󰍡 " ;;
+                Mail) APP_ICONS+="󰇮 " ;;
+                Notes) APP_ICONS+="󰎞 " ;;
+                Preview) APP_ICONS+="󰋲 " ;;
+                *) [ -n "$app" ] && APP_ICONS+="󰘔 " ;;
+              esac
+            done <<< "$APPS"
+
+            # Trim trailing space
+            APP_ICONS="$(echo "$APP_ICONS" | sed 's/ $//')"
+
+            if [ "$SID" = "$FOCUSED_WORKSPACE" ]; then
+              sketchybar --set "$NAME" \
+                background.drawing=on \
+                icon.color=0xff7E9CD8 \
+                label="$APP_ICONS" \
+                label.color=0xffDCD7BA
+            elif [ -n "$APP_ICONS" ]; then
+              sketchybar --set "$NAME" \
+                background.drawing=off \
+                icon.color=0xffDCD7BA \
+                label="$APP_ICONS" \
+                label.color=0xff54546D
             else
-              sketchybar --set "$NAME" background.drawing=off label.color=0xffC8C093
+              sketchybar --set "$NAME" \
+                background.drawing=off \
+                icon.color=0xff54546D \
+                label="" \
+                label.color=0xff54546D
             fi
           '';
         };
