@@ -30,6 +30,7 @@
       system-default
 
       shell
+      git
     ];
   };
 }

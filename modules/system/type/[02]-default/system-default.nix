@@ -22,7 +22,6 @@
       with inputs.self.modules.darwin;
       [
         system-minimal
-        determinate
         home-manager
         homebrew
       ]

@@ -14,6 +14,9 @@
   flake.modules.darwin.system-desktop = {
     imports = with inputs.self.modules.darwin; [
       system-cli
+
+      dock
+      finder
     ];
   };
 

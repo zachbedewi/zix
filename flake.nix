@@ -16,21 +16,35 @@
         nixpkgs.follows = "nixpkgs";
       };
     };
-    determinate = {
-      url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
-      inputs.nixpkgs.follows = "nixpkgs";
+    flake-file = {
+      url = "github:vic/flake-file";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
     };
-    flake-file.url = "github:vic/flake-file";
-    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    import-tree.url = "github:vic/import-tree";
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+    import-tree = {
+      url = "github:vic/import-tree";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-darwin = {
       url = "github:LnL7/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";

@@ -17,35 +17,23 @@
 
       # custom settings written to /etc/nix/nix.cusom.conf
 
-      determinateNix.customSettings = {
-        # enables parallel evaluation (remove this setting or set the value to 1 to disable)
-        eval-cores = 0;
-
-        # disable global registry
-        flake-registry = "";
-
-        lazy-trees = true;
-        warn-dirty = false;
-
-        experimental-features = [
-          "nix-command"
-          "flakes"
-        ];
-
-        extra-experimental-features = [
-          "build-time-fetch-tree" # enables build time flake inputs
-          "parallel-eval" # enables parallel evaluation
-        ];
+      nix.settings = {
         substituters = [
           # high priority since it's almost always used
           "https://cache.nixos.org?priority=10"
           "https://install.determinate.systems"
           "https://nix-community.cachix.org"
         ];
+
         trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
           "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM"
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        ];
+
+        experimental-features = [
+          "nix-command"
+          "flakes"
         ];
       };
 
