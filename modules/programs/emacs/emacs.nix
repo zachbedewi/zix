@@ -131,6 +131,7 @@
             ]
           )
         }:/opt/homebrew/bin:/usr/bin:$PATH"
+        export GIT_CONFIG_NOSYSTEM=1
         EMACSDIR="$HOME/.config/emacs"
         DOOMBIN="$EMACSDIR/bin/doom"
 
