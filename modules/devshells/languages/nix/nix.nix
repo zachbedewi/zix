@@ -13,6 +13,8 @@
 
         packages = with pkgs; [
           nixd
+          sops
+          age
           nixfmt-rfc-style
           statix
           nix-diff
