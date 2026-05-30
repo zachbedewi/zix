@@ -1,4 +1,5 @@
 {
+  inputs,
   ...
 }:
 {
@@ -12,6 +13,5 @@
     };
   };
 
-  # TODO: Uncomment after write-flake
-  # imports = [ inputs.home-manager.flakeModules.home-manager ];
+  imports = [ inputs.home-manager.flakeModules.home-manager ];
 }
