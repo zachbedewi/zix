@@ -21,6 +21,7 @@
 
       dock
       finder
+      trackpad
     ];
   };
 
