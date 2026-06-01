@@ -2,7 +2,7 @@
   ...
 }:
 {
-  flake.modules.darwin.dock = {
+  flake.modules.darwin.trackpad = {
     system.defaults.trackpad = {
 
       # Functionality
