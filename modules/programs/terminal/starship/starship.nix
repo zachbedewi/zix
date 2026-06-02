@@ -7,7 +7,10 @@
     {
       programs.starship = {
         enable = true;
+
         enableZshIntegration = true;
+        enableBashIntegration = true;
+        enableNushellIntegration = true;
 
         settings = {
           add_newline = true;

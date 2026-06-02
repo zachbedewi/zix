@@ -1,5 +1,5 @@
 let
-  genericPackages =
+  packages =
     {
       pkgs,
       ...
@@ -12,15 +12,15 @@ let
     };
 in
 {
-  flake.modules.nixos.cli-tools = {
+  flake.modules.nixos.generic = {
     imports = [
-      genericPackages
+      packages
     ];
   };
 
-  flake.modules.darwin.cli-tools = {
+  flake.modules.darwin.generic = {
     imports = [
-      genericPackages
+      packages
     ];
   };
 }

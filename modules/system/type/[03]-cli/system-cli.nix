@@ -12,7 +12,7 @@
       ssh
       firmware
       networking
-      cli-tools
+      generic
     ];
   };
 
@@ -21,7 +21,7 @@
       system-default
 
       ssh
-      cli-tools
+      generic
     ];
   };
 

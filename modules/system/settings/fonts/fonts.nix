@@ -4,21 +4,18 @@
 let
   fontPackages =
     pkgs: with pkgs; [
-      # Nerd Font symbols (composable with any monospace font)
-      nerd-fonts.symbols-only
-
       # Coding / Monospace
       nerd-fonts.jetbrains-mono
       nerd-fonts.fira-code
       nerd-fonts.iosevka
       nerd-fonts.hack
 
-      # Sans-serif (UI, documents, presentations)
+      # Sans-serif
       inter
       source-sans
       liberation_ttf
 
-      # Serif (papers, reading, academic)
+      # Serif
       source-serif
       libertine
       eb-garamond
@@ -26,10 +23,9 @@ let
       # CJK (Chinese, Japanese, Korean)
       noto-fonts-cjk-sans
 
-      # Emoji
+      # Symbols/Emoji
       noto-fonts-color-emoji
-
-      # General Unicode coverage
+      nerd-fonts.symbols-only
       noto-fonts
     ];
 in

@@ -1,12 +1,12 @@
 {
-  flake.modules.nixos.cli-tools =
+  flake.modules.darwin.generic =
     {
       pkgs,
       ...
     }:
     {
       environment.systemPackages = with pkgs; [
-        parted
+        mas
       ];
     };
 }
