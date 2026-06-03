@@ -28,6 +28,8 @@
         echo "Copying Emacs.app to /Applications..."
         cp -r /opt/homebrew/opt/emacs-plus@30/Emacs.app /Applications/
         cp -r "/opt/homebrew/opt/emacs-plus@30/Emacs Client.app" /Applications/
+        /usr/bin/codesign --force --deep --sign - /Applications/Emacs.app
+        /usr/bin/codesign --force --deep --sign - "/Applications/Emacs Client.app"
       '';
     };
 
