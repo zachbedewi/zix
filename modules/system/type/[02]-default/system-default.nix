@@ -25,7 +25,6 @@
         system-minimal
         home-manager
         homebrew
-        sops
       ]
       ++ (with inputs.self.modules.generic; [
         systemConstants
@@ -42,7 +41,6 @@
         system-minimal
 
         xdg
-        sops
       ]
       ++ [ inputs.self.modules.generic.systemConstants ];
   };
