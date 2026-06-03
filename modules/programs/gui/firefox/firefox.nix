@@ -537,5 +537,7 @@
       };
 
       home.file = lib.mkMerge (map mkChromeDir profiles);
+
+      xdg.configFile."tridactyl/tridactylrc".source = ./tridactylrc;
     };
 }
