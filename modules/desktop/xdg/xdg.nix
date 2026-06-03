@@ -35,9 +35,9 @@
           templates = null;
         };
 
-        mime.enable = true;
+        mime.enable = pkgs.stdenv.isLinux;
         mimeApps = {
-          enable = true;
+          enable = pkgs.stdenv.isLinux;
 
           defaultApplications =
             let
