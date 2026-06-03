@@ -35,6 +35,7 @@
       direnv
       emacs
       firefox
+      xdg
 
       # Darwin window management (no-op on Linux via lib.mkIf)
       aerospace

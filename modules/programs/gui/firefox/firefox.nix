@@ -536,7 +536,19 @@
         };
       };
 
-      home.file = lib.mkMerge (map mkChromeDir profiles);
+      home.file = lib.mkMerge (
+        (map mkChromeDir profiles)
+        ++ [
+          (lib.mkIf isDarwin {
+            "Library/Application Support/Mozilla/NativeMessagingHosts/tridactyl.json".source =
+              "${pkgs.tridactyl-native}/lib/mozilla/native-messaging-hosts/tridactyl.json";
+          })
+        ]
+      );
+
+      programs.firefox.nativeMessagingHosts = lib.mkIf (!isDarwin) [
+        pkgs.tridactyl-native
+      ];
 
       xdg.configFile."tridactyl/tridactylrc".source = ./tridactylrc;
     };

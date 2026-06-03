@@ -28,7 +28,7 @@
           videos = "${home}/Videos";
 
           extraConfig = {
-            SCREENSHOTS = "${config.xdg.userDires.pictures}/Screenshots";
+            SCREENSHOTS = "${config.xdg.userDirs.pictures}/Screenshots";
           };
 
           publicShare = null;
