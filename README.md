@@ -6,7 +6,6 @@ Things to add:
 * secrets
 * better desktop environment
 * dev environment
-* direnv or equivalent
 * autoformatting and linting
 * virtual machines
 * iso

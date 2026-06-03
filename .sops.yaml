@@ -1,0 +1,10 @@
+keys:
+  - &admin age1nn6js48rl3wtn078kdm5ydve48gx2ntz3kynflvyu3yfv90t23xs6eecg0
+  - &cocoon age12nz0tyng5l79x4jj3lslwfdcs4y66dx5y7wqs4w03faq5zh6myxq4refjd
+
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *admin
+          - *cocoon
