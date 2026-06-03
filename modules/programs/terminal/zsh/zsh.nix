@@ -12,23 +12,32 @@
     {
       programs.zsh = {
         enable = true;
-        dotDir = "${config.xdg.configHome}/zsh";
         enableCompletion = true;
+        dotDir = "${config.xdg.configHome}/zsh";
+
         defaultKeymap = "viins";
         autocd = true;
 
-        history = {
-          size = 55000;
-          save = 50000;
-          extended = true;
-          share = true;
-          ignoreDups = true;
-          ignoreAllDups = true;
-          ignoreSpace = true;
-          expireDuplicatesFirst = true;
-          saveNoDups = true;
-          findNoDups = true;
-        };
+        history =
+          let
+            sz = 50000;
+          in
+          {
+            path = "${config.xdg.stateHome}/zsh/history";
+
+            size = sz;
+            save = sz;
+
+            share = true;
+
+            ignoreDups = true;
+            ignoreAllDups = true;
+            expireDuplicatesFirst = true;
+            extended = true;
+
+            saveNoDups = true;
+            findNoDups = true;
+          };
 
         setOptions = [
           "AUTO_CD"
@@ -182,11 +191,6 @@
           spinner = "#957FB8";
           header = "#7E9CD8";
         };
-      };
-
-      programs.zoxide = {
-        enable = true;
-        enableZshIntegration = true;
       };
 
       programs.bash = {

@@ -2,7 +2,7 @@
   ...
 }:
 {
-  flake.modules.homeManager.shellAliases = {
+  flake.modules.homeManager.git = {
     zix.shellAliases = {
       gl = "git lg";
       gs = "git status";
