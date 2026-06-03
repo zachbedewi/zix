@@ -13,6 +13,7 @@
       firmware
       networking
       generic
+      gh
     ];
   };
 
@@ -22,6 +23,7 @@
 
       ssh
       generic
+      gh
     ];
   };
 
@@ -36,6 +38,7 @@
       starship
 
       git
+      gh
       eza
       fzf
       zoxide
