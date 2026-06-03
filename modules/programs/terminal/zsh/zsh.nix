@@ -101,47 +101,6 @@
           }
         ];
 
-        shellAliases = {
-          # Git
-          # gs = "git status";
-          ga = "git add";
-          gaa = "git add --all";
-          gc = "git commit";
-          gcm = "git commit -m";
-          gp = "git push";
-          gpl = "git pull";
-          gd = "git diff";
-          gds = "git diff --staged";
-          gl = "git log --oneline --graph --decorate";
-          gco = "git checkout";
-          gcb = "git checkout -b";
-          gb = "git branch";
-          gst = "git stash";
-          gstp = "git stash pop";
-
-          # Nix
-          nr = "nix run";
-          nb = "nix build";
-          nd = "nix develop";
-          nfu = "nix flake update";
-          nfc = "nix flake check";
-          nfs = "nix flake show";
-          nrs = "sudo nixos-rebuild switch --flake .";
-          nrt = "sudo nixos-rebuild test --flake .";
-          drs = "darwin-rebuild switch --flake .";
-
-          # System / Navigation
-          ls = "eza";
-          ll = "eza --long --all --group";
-          la = "eza --long --all";
-          lt = "eza --long --sort=modified";
-          tree = "eza --tree";
-          ".." = "cd ..";
-          "..." = "cd ../..";
-          "...." = "cd ../../..";
-          "....." = "cd ../../../..";
-        };
-
         initContent = lib.mkMerge [
           (lib.mkOrder 600 ''
             # Completion system styling

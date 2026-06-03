@@ -11,6 +11,16 @@
       };
 
       config = {
+        zix.shellAliases = {
+          nfu = "nix flake update";
+          nfc = "nix flake check";
+
+          ".." = "cd ..";
+          "..." = "cd ../..";
+          "...." = "cd ../../..";
+          "....." = "cd ../../../..";
+        };
+
         programs.zsh.shellAliases = config.zix.shellAliases;
       };
     };
