@@ -40,6 +40,7 @@
       fzf
       zoxide
       direnv
+      delta
     ];
   };
 }
