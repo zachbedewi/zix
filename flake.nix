@@ -4,6 +4,14 @@
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 
   inputs = {
+    arkenfox = {
+      url = "github:arkenfox/user.js";
+      flake = false;
+    };
+    betterfox = {
+      url = "github:yokoffing/Betterfox";
+      flake = false;
+    };
     brew-api = {
       url = "github:BatteredBunny/brew-api";
       flake = false;
@@ -20,6 +28,10 @@
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    firefox-csshacks = {
+      url = "github:MrOtherGuy/firefox-csshacks";
+      flake = false;
+    };
     flake-file = {
       url = "github:vic/flake-file";
       inputs.nixpkgs-lib.follows = "nixpkgs";
@@ -27,6 +39,10 @@
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+    fx-autoconfig = {
+      url = "github:MrOtherGuy/fx-autoconfig";
+      flake = false;
     };
     git-hooks-nix = {
       url = "github:cachix/git-hooks.nix";
@@ -63,6 +79,7 @@
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nur.url = "github:nix-community/NUR";
     sops = {
       url = "github:mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -70,6 +87,10 @@
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    uc-scripts = {
+      url = "github:aminomancer/uc.css.js";
+      flake = false;
     };
   };
 }

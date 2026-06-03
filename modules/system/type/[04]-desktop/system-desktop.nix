@@ -10,6 +10,7 @@
       system-cli
       fonts
       emacs
+      firefox
     ];
   };
 
@@ -18,6 +19,7 @@
       system-cli
       fonts
       emacs
+      firefox
 
       dock
       finder
@@ -32,6 +34,7 @@
       starship
       direnv
       emacs
+      firefox
 
       # Darwin window management (no-op on Linux via lib.mkIf)
       aerospace
