@@ -103,7 +103,7 @@
 
         shellAliases = {
           # Git
-          gs = "git status";
+          # gs = "git status";
           ga = "git add";
           gaa = "git add --all";
           gc = "git commit";

@@ -29,6 +29,7 @@
     imports = with inputs.self.modules.homeManager; [
       system-default
 
+      shellAliases
       zsh
       eza
       git
