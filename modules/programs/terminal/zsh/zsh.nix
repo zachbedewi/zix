@@ -168,36 +168,6 @@
         ];
       };
 
-      programs.fzf = {
-        enable = true;
-        enableZshIntegration = true;
-        defaultOptions = [
-          "--height=40%"
-          "--layout=reverse"
-          "--border"
-          "--info=inline"
-        ];
-        colors = {
-          fg = "#DCD7BA";
-          bg = "#1F1F28";
-          hl = "#7E9CD8";
-          "fg+" = "#DCD7BA";
-          "bg+" = "#2D4F67";
-          "hl+" = "#7FB4CA";
-          info = "#7AA89F";
-          prompt = "#98BB6C";
-          pointer = "#957FB8";
-          marker = "#E6C384";
-          spinner = "#957FB8";
-          header = "#7E9CD8";
-        };
-      };
-
-      programs.bash = {
-        enable = true;
-        enableCompletion = true;
-      };
-
       home.packages = with pkgs; [
         zsh-completions
         any-nix-shell

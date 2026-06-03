@@ -31,8 +31,6 @@
     imports = with inputs.self.modules.homeManager; [
       system-cli
       kitty
-      starship
-      direnv
       emacs
       firefox
 

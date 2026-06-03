@@ -18,10 +18,13 @@
         icons = "auto";
 
         extraOptions = [
+          "--oneline"
+          "--long"
+          "--grid"
+          "--all"
           "--group-directories-first"
           "--header"
-          "--long"
-          "--mounts"
+          "--bytes"
         ];
       };
     };

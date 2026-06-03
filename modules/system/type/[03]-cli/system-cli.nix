@@ -31,8 +31,15 @@
 
       shellAliases
       zsh
-      eza
+      bash
+
+      starship
+
       git
+      eza
+      fzf
+      zoxide
+      direnv
     ];
   };
 }
