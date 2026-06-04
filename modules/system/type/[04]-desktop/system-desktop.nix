@@ -10,7 +10,6 @@
       system-cli
       fonts
       emacs
-      firefox
     ];
   };
 
@@ -19,7 +18,6 @@
       system-cli
       fonts
       emacs
-      firefox
 
       dock
       finder
@@ -32,7 +30,6 @@
       system-cli
       kitty
       emacs
-      firefox
 
       # Darwin window management (no-op on Linux via lib.mkIf)
       aerospace
