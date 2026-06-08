@@ -1,9 +1,6 @@
 let
   packages =
-    {
-      pkgs,
-      ...
-    }:
+    { pkgs, ... }:
     {
       environment.systemPackages = with pkgs; [
         git
@@ -13,14 +10,10 @@ let
 in
 {
   flake.modules.nixos.generic = {
-    imports = [
-      packages
-    ];
+    imports = [ packages ];
   };
 
   flake.modules.darwin.generic = {
-    imports = [
-      packages
-    ];
+    imports = [ packages ];
   };
 }

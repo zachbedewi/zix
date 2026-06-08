@@ -1,12 +1,7 @@
 {
   flake.modules.darwin.generic =
+    { pkgs, ... }:
     {
-      pkgs,
-      ...
-    }:
-    {
-      environment.systemPackages = with pkgs; [
-        mas
-      ];
+      environment.systemPackages = with pkgs; [ mas ];
     };
 }

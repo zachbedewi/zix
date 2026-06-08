@@ -1,9 +1,6 @@
 {
   flake.modules.nixos.ssh =
-    {
-      lib,
-      ...
-    }:
+    { lib, ... }:
     let
       inherit (lib) mkDefault;
     in

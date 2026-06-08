@@ -1,7 +1,4 @@
-{
-  ...
-}:
-{
+_: {
   # Kanagawa colorscheme for kitty
   # https://github.com/rebelot/kanagawa.nvim
 

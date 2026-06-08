@@ -48,7 +48,27 @@
 (after! lsp-mode
   (setq lsp-idle-delay 0.5
         lsp-log-io nil
-        lsp-headerline-breadcrumb-enable t))
+        lsp-headerline-breadcrumb-enable t)
+
+  ;; Bemol multi-root workspace support for Brazil workspaces
+  (defun zb/bemol-workspace-folders ()
+    "Add bemol-detected workspace folders to lsp-mode."
+    (let* ((root (lsp-workspace-root))
+           (ws-root (when root
+                      (file-name-directory
+                       (directory-file-name
+                        (file-name-directory (directory-file-name root))))))
+           (bemol-file (when ws-root
+                         (expand-file-name ".bemol/ws_root_folders" ws-root))))
+      (when (and bemol-file (file-exists-p bemol-file))
+        (let ((folders (with-temp-buffer
+                         (insert-file-contents bemol-file)
+                         (split-string (buffer-string) "\n" t))))
+          (dolist (folder folders)
+            (when (file-directory-p folder)
+              (lsp-workspace-folders-add folder)))))))
+
+  (add-hook 'lsp-after-initialize-hook #'zb/bemol-workspace-folders))
 
 (after! lsp-treemacs
   (setq lsp-treemacs-symbols-position-params
@@ -63,6 +83,14 @@
 
 ;; --- Tree-sitter ---
 (setq +tree-sitter-hl-enabled-modes t)
+
+;; --- Kotlin LSP ---
+(after! lsp-kotlin
+  (setq lsp-kotlin-language-server-path "kotlin-language-server"))
+
+;; --- Scala LSP (Metals) ---
+(after! scala-mode
+  (setq lsp-metals-server-command "metals"))
 
 ;; --- Magit ---
 (after! magit

@@ -1,7 +1,4 @@
-{
-  ...
-}:
-{
+_: {
   flake.modules.homeManager.fzf =
     { pkgs, lib, ... }:
     {

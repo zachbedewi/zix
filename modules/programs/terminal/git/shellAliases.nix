@@ -1,7 +1,4 @@
-{
-  ...
-}:
-{
+_: {
   flake.modules.homeManager.git = {
     zix.shellAliases = {
       gl = "git lg";

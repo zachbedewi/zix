@@ -1,8 +1,4 @@
 {
-  inputs,
-  ...
-}:
-{
   flake-file.inputs = {
     arkenfox = {
       url = "github:arkenfox/user.js";
@@ -24,10 +20,5 @@
       url = "github:aminomancer/uc.css.js";
       flake = false;
     };
-    nur = {
-      url = "github:nix-community/NUR";
-    };
   };
-
-  flake.overlays.nur = inputs.nur.overlays.default;
 }
