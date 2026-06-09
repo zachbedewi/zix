@@ -7,10 +7,6 @@
       ...
     }:
     {
-      home.homeDirectory =
-        if pkgs.stdenv.isDarwin then
-          (lib.mkForce "/Users/${config.home.username}")
-        else
-          "/home/${config.home.username}";
+      home.homeDirectory = if pkgs.stdenv.isDarwin then (lib.mkForce "/Users/${config.home.username}") else "/home/${config.home.username}";
     };
 }

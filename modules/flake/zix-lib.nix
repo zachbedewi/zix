@@ -1,5 +1,4 @@
-{ inputs, lib, ... }:
-{
+{ inputs, lib, ... }: {
   # helper functions for creating system / home-manager configurations
 
   options.flake.zix-lib = lib.mkOption {

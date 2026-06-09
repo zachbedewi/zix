@@ -1,4 +1,1 @@
-{ inputs, ... }:
-{
-  imports = [ inputs.flake-file.flakeModules.default ];
-}
+{ inputs, ... }: { imports = [ inputs.flake-file.flakeModules.default ]; }

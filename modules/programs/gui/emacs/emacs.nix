@@ -1,30 +1,27 @@
-{ inputs, ... }:
-{
+{ inputs, ... }: {
   # Darwin: install emacs-plus via Homebrew (native macOS build with all patches)
   flake.modules = {
-    darwin.emacs =
-      { lib, ... }:
-      {
-        nix-homebrew.taps."d12frosted/homebrew-emacs-plus" = inputs.homebrew-emacs-plus;
+    darwin.emacs = { lib, ... }: {
+      nix-homebrew.taps."d12frosted/homebrew-emacs-plus" = inputs.homebrew-emacs-plus;
 
-        homebrew = {
-          taps = [ "d12frosted/emacs-plus" ];
-          brews = [
-            {
-              name = "emacs-plus@30";
-              args = [ "with-imagemagick" ];
-            }
-          ];
-        };
-
-        system.activationScripts.postActivation.text = lib.mkAfter ''
-          echo "Copying Emacs.app to /Applications..."
-          cp -r /opt/homebrew/opt/emacs-plus@30/Emacs.app /Applications/
-          cp -r "/opt/homebrew/opt/emacs-plus@30/Emacs Client.app" /Applications/
-          /usr/bin/codesign --force --deep --sign - /Applications/Emacs.app
-          /usr/bin/codesign --force --deep --sign - "/Applications/Emacs Client.app"
-        '';
+      homebrew = {
+        taps = [ "d12frosted/emacs-plus" ];
+        brews = [
+          {
+            name = "emacs-plus@30";
+            args = [ "with-imagemagick" ];
+          }
+        ];
       };
+
+      system.activationScripts.postActivation.text = lib.mkAfter ''
+        echo "Copying Emacs.app to /Applications..."
+        cp -r /opt/homebrew/opt/emacs-plus@30/Emacs.app /Applications/
+        cp -r "/opt/homebrew/opt/emacs-plus@30/Emacs Client.app" /Applications/
+        /usr/bin/codesign --force --deep --sign - /Applications/Emacs.app
+        /usr/bin/codesign --force --deep --sign - "/Applications/Emacs Client.app"
+      '';
+    };
 
     # NixOS: apply emacs-overlay for pgtk build
     nixos.emacs = {
@@ -109,8 +106,7 @@
 
           sessionPath = [ "$HOME/.config/emacs/bin" ];
 
-          file.".config/doom".source =
-            config.lib.file.mkOutOfStoreSymlink "${flakeRoot}/modules/programs/gui/emacs/doom.d";
+          file.".config/doom".source = config.lib.file.mkOutOfStoreSymlink "${flakeRoot}/modules/programs/gui/emacs/doom.d";
 
           activation.doom-emacs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
             export PATH="${

@@ -1,4 +1,1 @@
-{ inputs, ... }:
-{
-  imports = [ inputs.treefmt.flakeModule ];
-}
+{ inputs, ... }: { imports = [ inputs.treefmt.flakeModule ]; }

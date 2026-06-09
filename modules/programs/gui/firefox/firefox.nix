@@ -1,5 +1,4 @@
-{ inputs, ... }:
-{
+{ inputs, ... }: {
   flake.modules = {
     darwin.firefox =
       { pkgs, ... }:
@@ -78,8 +77,7 @@
       { pkgs, lib, ... }:
       let
         isDarwin = pkgs.stdenv.isDarwin;
-        profileBase =
-          if isDarwin then "Library/Application Support/Firefox/Profiles" else ".mozilla/firefox";
+        profileBase = if isDarwin then "Library/Application Support/Firefox/Profiles" else ".mozilla/firefox";
 
         addons = pkgs.nur.repos.rycee.firefox-addons;
 
@@ -425,12 +423,9 @@
             "${base}/utils/boot.sys.mjs".source = "${inputs.fx-autoconfig}/profile/chrome/utils/boot.sys.mjs";
             "${base}/utils/fs.sys.mjs".source = "${inputs.fx-autoconfig}/profile/chrome/utils/fs.sys.mjs";
             "${base}/utils/utils.sys.mjs".source = "${inputs.fx-autoconfig}/profile/chrome/utils/utils.sys.mjs";
-            "${base}/utils/uc_api.sys.mjs".source =
-              "${inputs.fx-autoconfig}/profile/chrome/utils/uc_api.sys.mjs";
-            "${base}/utils/module_loader.mjs".source =
-              "${inputs.fx-autoconfig}/profile/chrome/utils/module_loader.mjs";
-            "${base}/utils/chrome.manifest".source =
-              "${inputs.fx-autoconfig}/profile/chrome/utils/chrome.manifest";
+            "${base}/utils/uc_api.sys.mjs".source = "${inputs.fx-autoconfig}/profile/chrome/utils/uc_api.sys.mjs";
+            "${base}/utils/module_loader.mjs".source = "${inputs.fx-autoconfig}/profile/chrome/utils/module_loader.mjs";
+            "${base}/utils/chrome.manifest".source = "${inputs.fx-autoconfig}/profile/chrome/utils/chrome.manifest";
 
             "${base}/csshacks".source = inputs.firefox-csshacks;
           }
@@ -453,11 +448,7 @@
         programs.firefox = {
           enable = true;
 
-          package =
-            if isDarwin then
-              null
-            else
-              pkgs.firefox.override { extraPrefs = builtins.readFile ./autoconfig-bootstrap.js; };
+          package = if isDarwin then null else pkgs.firefox.override { extraPrefs = builtins.readFile ./autoconfig-bootstrap.js; };
 
           policies = lib.mkIf (!isDarwin) {
             DisableTelemetry = true;

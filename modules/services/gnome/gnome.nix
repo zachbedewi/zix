@@ -1,5 +1,4 @@
-{ inputs, ... }:
-{
+{ inputs, ... }: {
   flake.modules.nixos.gnome = {
     home-manager.sharedModules = [ inputs.self.modules.homeManager.gnome ];
     services.xserver = {

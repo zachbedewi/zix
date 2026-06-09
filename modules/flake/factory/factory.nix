@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+{ lib, ... }: {
   # factory: storage for factory aspect functions
 
   options.flake.factory = lib.mkOption {

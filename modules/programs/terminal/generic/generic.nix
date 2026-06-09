@@ -1,12 +1,10 @@
 let
-  packages =
-    { pkgs, ... }:
-    {
-      environment.systemPackages = with pkgs; [
-        git
-        home-manager
-      ];
-    };
+  packages = { pkgs, ... }: {
+    environment.systemPackages = with pkgs; [
+      git
+      home-manager
+    ];
+  };
 in
 {
   flake.modules.nixos.generic = {

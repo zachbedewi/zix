@@ -1,4 +1,1 @@
-{ inputs, ... }:
-{
-  imports = [ inputs.git-hooks.flakeModule ];
-}
+{ inputs, ... }: { imports = [ inputs.git-hooks.flakeModule ]; }

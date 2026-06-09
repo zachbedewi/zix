@@ -1,19 +1,17 @@
 {
-  flake.modules.nixos.systemd-boot =
-    { lib, ... }:
-    {
-      boot = {
-        loader = {
-          systemd-boot = {
-            enable = true;
-            configurationLimit = lib.mkDefault 10;
-          };
-          efi.canTouchEfiVariables = true;
-          timeout = 3;
+  flake.modules.nixos.systemd-boot = { lib, ... }: {
+    boot = {
+      loader = {
+        systemd-boot = {
+          enable = true;
+          configurationLimit = lib.mkDefault 10;
         };
-        initrd = {
-          systemd.enable = true;
-        };
+        efi.canTouchEfiVariables = true;
+        timeout = 3;
+      };
+      initrd = {
+        systemd.enable = true;
       };
     };
+  };
 }

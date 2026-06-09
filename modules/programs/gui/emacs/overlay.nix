@@ -1,5 +1,4 @@
-{ inputs, ... }:
-{
+{ inputs, ... }: {
   flake-file.inputs = {
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";

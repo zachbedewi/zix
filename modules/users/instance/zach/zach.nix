@@ -1,5 +1,4 @@
-{ self, lib, ... }:
-{
+{ self, lib, ... }: {
   flake.modules = lib.mkMerge [
     (self.factory.user "zach" true { })
     {
@@ -19,15 +18,13 @@
         ];
       };
 
-      homeManager.zach =
-        { pkgs, ... }:
-        {
-          imports = with self.modules.homeManager; [
-            gnome
-            desktop
-          ];
-          home.packages = with pkgs; [ mediainfo ];
-        };
+      homeManager.zach = { pkgs, ... }: {
+        imports = with self.modules.homeManager; [
+          gnome
+          desktop
+        ];
+        home.packages = with pkgs; [ mediainfo ];
+      };
     }
   ];
 }

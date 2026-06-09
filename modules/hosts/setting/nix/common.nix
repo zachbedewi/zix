@@ -14,8 +14,7 @@ let
     {
       nix =
         let
-          mappedRegistry =
-            inputs |> filterAttrs (_: isType "flake") |> mapAttrs (_: flake: { inherit flake; });
+          mappedRegistry = inputs |> filterAttrs (_: isType "flake") |> mapAttrs (_: flake: { inherit flake; });
         in
         {
           registry = mappedRegistry // {

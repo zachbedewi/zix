@@ -1,5 +1,4 @@
-{ lib, flake-parts-lib, ... }:
-{
+{ lib, flake-parts-lib, ... }: {
   # there's no nix-darwin module for flake-parts,
   # so we have to manually add flake.darwinConfigurations
 

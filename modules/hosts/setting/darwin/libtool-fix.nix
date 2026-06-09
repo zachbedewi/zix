@@ -5,14 +5,7 @@ _: {
 
   flake.modules.darwin.libtool-fix = {
     home-manager.sharedModules = [
-      (
-        { pkgs, lib, ... }:
-        {
-          home.packages = [
-            (lib.hiPrio (pkgs.writeShellScriptBin "libtool" ''exec /usr/bin/libtool "$@"''))
-          ];
-        }
-      )
+      ({ pkgs, lib, ... }: { home.packages = [ (lib.hiPrio (pkgs.writeShellScriptBin "libtool" ''exec /usr/bin/libtool "$@"'')) ]; })
     ];
   };
 }

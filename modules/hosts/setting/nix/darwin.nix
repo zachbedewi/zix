@@ -1,6 +1,17 @@
 {
   flake.modules.darwin.nix = {
     nix = {
+      settings = {
+        allowed-users = [
+          "root"
+          "@admin"
+        ];
+        trusted-users = [
+          "root"
+          "@admin"
+        ];
+      };
+
       gc = {
         interval = [
           {

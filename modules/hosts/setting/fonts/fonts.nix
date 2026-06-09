@@ -28,18 +28,12 @@ let
     ];
 in
 {
-  flake.modules.nixos.fonts =
-    { pkgs, ... }:
-    {
-      fonts = {
-        packages = fontPackages pkgs;
-        fontDir.enable = true;
-      };
+  flake.modules.nixos.fonts = { pkgs, ... }: {
+    fonts = {
+      packages = fontPackages pkgs;
+      fontDir.enable = true;
     };
+  };
 
-  flake.modules.darwin.fonts =
-    { pkgs, ... }:
-    {
-      fonts.packages = fontPackages pkgs;
-    };
+  flake.modules.darwin.fonts = { pkgs, ... }: { fonts.packages = fontPackages pkgs; };
 }

@@ -1,5 +1,4 @@
-{ self, ... }:
-{
+{ self, ... }: {
   flake.modules.homeManager.base = {
     imports = with self.modules.homeManager; [
       home-directory
