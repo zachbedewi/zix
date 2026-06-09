@@ -70,8 +70,6 @@ let
 
             max-jobs = "auto";
 
-            sandbox = true;
-
             keep-going = true;
 
             stalled-download-timeout = 20;

@@ -11,6 +11,7 @@
       };
 
       settings = {
+        sandbox = true;
         sandbox-fallback = false;
       };
     };
