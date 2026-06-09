@@ -15,7 +15,6 @@ _: {
       extraOptions = [
         "--oneline"
         "--long"
-        "--grid"
         "--all"
         "--group-directories-first"
         "--header"
