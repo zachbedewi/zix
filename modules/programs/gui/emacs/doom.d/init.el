@@ -14,7 +14,6 @@
        hl-todo
        hydra
        indent-guides
-       (ligatures +extra)
        minimap
        modeline
        nav-flash
