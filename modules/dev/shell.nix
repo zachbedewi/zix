@@ -15,6 +15,7 @@
             with pkgs;
             [
               config.formatter
+              config.packages.bootstrap
 
               nixd
 

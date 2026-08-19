@@ -142,24 +142,22 @@ addressed by `/dev/disk/by-partlabel/`, which replaces a hand-written
 `boot.supportedFilesystems`, autoScrub, trim, and derives the required
 `networking.hostId` from the hostname.
 
-**3. Install.** Remotely, from any machine that can reach the target's installer:
+**3. Install** with `zix-bootstrap`, which is on `PATH` in the devShell and also
+runnable as `nix run .#bootstrap --`. Boot the target from a NixOS installer, then
+either drive it over ssh from here:
 
-```
-nix run github:nix-community/nixos-anywhere -- \
-  --flake .#<host> \
-  --generate-hardware-config nixos-facter modules/hosts/<host>/facter.json \
-  --target-host root@<ip>
-```
-
-Or locally from a NixOS installer USB on the target:
-
-```
-sudo nixos-facter -o /tmp/facter.json
-sudo disko --mode destroy,format,mount --flake .#<host>
-sudo nixos-install --flake .#<host>
+```bash
+zix-bootstrap <host> --target root@<ip>
 ```
 
-**4. Commit the report** as `modules/hosts/<host>/facter.json` and point at it:
+or run it on the target itself, from a checkout on the installer:
+
+```bash
+zix-bootstrap <host> --local
+```
+
+**4. Commit what it wrote** — the hardware report, `.sops.yaml` and the rekeyed
+secrets — and point the host at its report:
 
 ```nix
 { hardware.facter.reportPath = ./facter.json; }
@@ -176,6 +174,77 @@ is enabled, so the two do not both try to configure the same link.
 The report is committed to this **public** repo. It describes the machine in
 detail and includes an `smbios` section; read one before committing it if that
 matters to you.
+
+### What `zix-bootstrap` does
+
+`modules/dev/bootstrap.nix` wraps `modules/dev/bootstrap.sh`. It runs five steps
+against a host that is already declared in this flake — it never invents a host
+for you, and it never commits, pushes or touches a running system.
+
+| Step | What happens |
+| --- | --- |
+| preflight | resolves the repo root, checks `modules/hosts/<host>/` exists, echoes the target |
+| hardware | runs `nixos-facter` and writes `modules/hosts/<host>/facter.json`, then `git add -N`s it, because a file git does not know about is invisible to the flake |
+| flake checks | evaluates the host's `toplevel` and reads `disko.devices.disk`, so a broken config fails before any disk is touched |
+| secrets | generates the host's ed25519 key, converts it to an age recipient with `ssh-to-age`, adds it to `.sops.yaml`, and rekeys every secret with `sops updatekeys` |
+| install | prints the disks, demands confirmation, then partitions, formats and installs |
+
+Each step is idempotent. An existing report is reused unless you pass
+`--refresh-facter`, and an existing `.sops.yaml` entry for the host is updated in
+place rather than duplicated — anchors, aliases and comments all survive.
+
+| Option | Meaning |
+| --- | --- |
+| `--target <[user@]addr>` | install onto a remote installer over ssh, with nixos-anywhere. Bare addresses get `root@` |
+| `--local` | install onto the machine running the script, which must be an installer with the disks attached |
+| `--ssh-port <port>` | port of the *installer's* sshd, default 22. Not the port the host ends up on |
+| `--host-key <file>` | reuse an ed25519 private key as the host key instead of generating one |
+| `--save-host-key <dir>` | also write the generated key to `<dir>` |
+| `--refresh-facter` | regenerate the report even if one exists |
+| `--no-facter` | do not generate a report |
+| `--no-secrets` | do not provision a host key and do not touch `.sops.yaml` |
+| `--dry-run` | print every command that would run, change nothing |
+| `-y`, `--yes` | skip the confirmation prompt |
+
+Four things are worth knowing before the first run.
+
+**The host key is generated here, not on the target.** sops encrypts to the
+host's age recipient, which is derived from its ssh host key — so that key has to
+exist *before* the system is built, or the machine boots with secrets it cannot
+read. The script generates the keypair locally, rekeys against it, and hands the
+private half to nixos-anywhere via `--extra-files` so it lands at
+`/etc/ssh/ssh_host_ed25519_key` on the installed system. The local copy is in a
+`mktemp -d` that is removed on exit unless you asked for `--save-host-key`.
+
+**Rekeying needs a key that can already decrypt.** `sops updatekeys` re-encrypts
+to the new recipient list, which means decrypting first. The `admin` key in
+`.sops.yaml` has to be available to you locally, or the secrets step fails with
+sops' own error and nothing is installed.
+
+**Reinstalling a machine is a different command than installing one.** A fresh
+install wants a fresh key; a rebuild of a machine that already appears in
+`.sops.yaml` wants `--host-key` pointed at its existing key, otherwise you rotate
+its identity and every other host's secrets get rekeyed for no reason.
+
+**Root access disappears at the reboot.** The `ssh` concern puts sshd on port 30
+with root and password login disabled, so the installer's `root@` access is gone
+once the host comes back up. Reach it as your own user:
+`ssh -p 30 <user>@<addr>`, and confirm the secrets arrived with `ls /run/secrets`.
+
+Start with `--dry-run`: it prints the disks that would be destroyed and the exact
+`nixos-anywhere` invocation without changing a file. If you would rather do it by
+hand, the equivalent is:
+
+```bash
+sudo nixos-facter -o modules/hosts/<host>/facter.json
+git add -N modules/hosts/<host>/facter.json
+sudo disko --mode destroy,format,mount --flake .#<host>
+sudo nixos-install --flake .#<host>
+```
+
+plus generating the host key, adding it to `.sops.yaml`, running
+`sops updatekeys` on every secret, and copying the key to
+`/mnt/etc/ssh/ssh_host_ed25519_key` before `nixos-install`.
 
 ## Adding a package
 
@@ -313,7 +382,13 @@ nix run .#write-flake        # regenerate flake.nix after changing an input
 nix flake lock               # update flake.lock
 nix flake check              # formatting, lint and pre-commit hooks
 treefmt                      # format
+zix-bootstrap --help         # install a host; see "Bootstrapping a host"
 ```
+
+After changing a pre-commit hook, re-enter the devShell (`direnv reload`, or
+`nix develop --command true`). `.pre-commit-config.yaml` is a symlink into the
+store written when the shell starts, so `nix flake check` can pass while the
+installed git hook still runs the previous config.
 
 `nix flake check` runs `treefmt`, `statix`, `deadnix`, `editorconfig-checker` and
 `typos`. It does **not** build the configurations, so check those explicitly:
