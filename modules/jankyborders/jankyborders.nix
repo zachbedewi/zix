@@ -1,7 +1,7 @@
 {
   flake.modules.homeManager.jankyborders =
     { pkgs, lib, ... }:
-    lib.mkIf pkgs.stdenv.isDarwin {
+    lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
       services.jankyborders = {
         enable = true;
         settings = {

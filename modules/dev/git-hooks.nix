@@ -22,6 +22,7 @@
             "^\.sops\.yaml$"
             "\.el$"
           ];
+          settings.ignored-words = [ "facter" ];
         };
         # keep-sorted end
       };

@@ -13,6 +13,9 @@ in
 
         boot
         locale
+
+        disko
+        facter
       ];
 
       system.stateVersion = "25.05";

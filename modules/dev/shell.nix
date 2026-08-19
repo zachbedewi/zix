@@ -1,23 +1,33 @@
-{
-  perSystem = { pkgs, config, ... }: {
-    devShells = {
-      default = pkgs.mkShell {
-        inherit (config.pre-commit) shellHook;
+{ inputs, ... }: {
+  perSystem =
+    {
+      pkgs,
+      config,
+      system,
+      ...
+    }:
+    {
+      devShells = {
+        default = pkgs.mkShell {
+          inherit (config.pre-commit) shellHook;
 
-        packages =
-          with pkgs;
-          [
-            config.formatter
+          packages =
+            with pkgs;
+            [
+              config.formatter
 
-            nixd
+              nixd
 
-            sops
-            age
-          ]
-          ++ config.pre-commit.settings.enabledPackages;
+              sops
+              age
 
-        inputsFrom = [ config.treefmt.build.devShell ];
+              inputs.disko.packages.${system}.disko
+              inputs.nixos-anywhere.packages.${system}.default
+            ]
+            ++ config.pre-commit.settings.enabledPackages;
+
+          inputsFrom = [ config.treefmt.build.devShell ];
+        };
       };
     };
-  };
 }

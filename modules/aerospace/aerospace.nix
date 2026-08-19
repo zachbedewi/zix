@@ -5,7 +5,7 @@
       sketchybar = "${pkgs.sketchybar}/bin/sketchybar";
       borders = "${pkgs.jankyborders}/bin/borders";
     in
-    lib.mkIf pkgs.stdenv.isDarwin {
+    lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
       programs.aerospace = {
         enable = true;
 

@@ -40,7 +40,7 @@
       in
       {
         # Linux only: nix-managed Emacs with pre-built C packages
-        programs.emacs = lib.mkIf pkgs.stdenv.isLinux {
+        programs.emacs = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
           enable = true;
           package = pkgs.emacs-git-pgtk;
           extraPackages =
@@ -101,8 +101,8 @@
               libtool
               pkg-config
             ]
-            ++ lib.optionals pkgs.stdenv.isDarwin [ coreutils ]
-            ++ lib.optionals pkgs.stdenv.isLinux [ gcc ];
+            ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [ coreutils ]
+            ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [ gcc ];
 
           sessionPath = [ "$HOME/.config/emacs/bin" ];
 

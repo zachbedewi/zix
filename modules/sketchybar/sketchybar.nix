@@ -4,7 +4,7 @@
     let
       fontFace = "JetBrainsMono Nerd Font Mono";
     in
-    lib.mkIf pkgs.stdenv.isDarwin {
+    lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
       programs.sketchybar = {
         enable = true;
         configType = "bash";
