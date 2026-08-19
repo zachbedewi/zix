@@ -4,14 +4,6 @@
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 
   inputs = {
-    arkenfox = {
-      url = "github:arkenfox/user.js";
-      flake = false;
-    };
-    betterfox = {
-      url = "github:yokoffing/Betterfox";
-      flake = false;
-    };
     brew-api = {
       url = "github:BatteredBunny/brew-api";
       flake = false;
@@ -28,21 +20,10 @@
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    firefox-csshacks = {
-      url = "github:MrOtherGuy/firefox-csshacks";
-      flake = false;
-    };
-    flake-file = {
-      url = "github:vic/flake-file";
-      inputs.nixpkgs-lib.follows = "nixpkgs";
-    };
+    flake-file.url = "github:vic/flake-file";
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
-    };
-    fx-autoconfig = {
-      url = "github:MrOtherGuy/fx-autoconfig";
-      flake = false;
     };
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
@@ -64,10 +45,7 @@
       url = "github:d12frosted/homebrew-emacs-plus";
       flake = false;
     };
-    import-tree = {
-      url = "github:vic/import-tree";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    import-tree.url = "github:vic/import-tree";
     kanagawa = {
       url = "github:rebelot/kanagawa.nvim";
       flake = false;
@@ -88,10 +66,6 @@
     treefmt = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    uc-scripts = {
-      url = "github:aminomancer/uc.css.js";
-      flake = false;
     };
   };
 }

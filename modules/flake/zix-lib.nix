@@ -1,54 +1,30 @@
-{ inputs, lib, ... }: {
-  # helper functions for creating system / home-manager configurations
+{
+  inputs,
+  self,
+  lib,
+  ...
+}:
+let
+  mkBuilders = import ../_lib/builders.nix { inherit inputs lib; };
+  mkFactory = import ../_lib/factory.nix;
+in
+{
+  options.flake = {
+    zix-lib = lib.mkOption {
+      type = lib.types.attrsOf lib.types.unspecified;
+      default = { };
+    };
 
-  options.flake.zix-lib = lib.mkOption {
-    type = lib.types.attrsOf lib.types.unspecified;
-    default = { };
+    factory = lib.mkOption {
+      type = lib.types.attrsOf lib.types.unspecified;
+      default = { };
+    };
   };
 
-  config.flake.zix-lib = {
+  config = {
+    flake.zix-lib = mkBuilders self.modules;
+    flake.factory = mkFactory self.modules;
 
-    mkNixos =
-      system: name:
-      {
-        modules ? inputs.self.modules,
-      }:
-      {
-        ${name} = inputs.nixpkgs.lib.nixosSystem {
-          modules = [
-            modules.nixos.${name}
-            { nixpkgs.hostPlatform = lib.mkDefault system; }
-          ];
-        };
-      };
-
-    mkDarwin =
-      system: name:
-      {
-        modules ? inputs.self.modules,
-      }:
-      {
-        ${name} = inputs.nix-darwin.lib.darwinSystem {
-          modules = [
-            modules.darwin.${name}
-            { nixpkgs.hostPlatform = lib.mkDefault system; }
-          ];
-        };
-      };
-
-    mkHomeManager =
-      system: name:
-      {
-        modules ? inputs.self.modules,
-      }:
-      {
-        ${name} = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = inputs.nixpkgs.legacyPackages.${system};
-          modules = [
-            modules.homeManager.${name}
-            { nixpkgs.config.allowUnfree = true; }
-          ];
-        };
-      };
+    _module.args = { inherit (self) zix-lib factory; };
   };
 }

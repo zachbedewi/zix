@@ -1,37 +1,5 @@
 {
   "nodes": {
-    "arkenfox": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1778605135,
-        "narHash": "sha256-+76DopMmUBZ5wJi2/BMCjC/nY2C8vXypX8JmBYEDycc=",
-        "owner": "arkenfox",
-        "repo": "user.js",
-        "rev": "8fe9905c35a1025d1e6df69479f7625585fd956d",
-        "type": "github"
-      },
-      "original": {
-        "owner": "arkenfox",
-        "repo": "user.js",
-        "type": "github"
-      }
-    },
-    "betterfox": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1780192992,
-        "narHash": "sha256-1eC6DowuP9PzaLxh1t2FKzUeJFw/ppimXIiwyJsRKwc=",
-        "owner": "yokoffing",
-        "repo": "Betterfox",
-        "rev": "c97bc0639609f35ff9d65522e3ddb03dac69e938",
-        "type": "github"
-      },
-      "original": {
-        "owner": "yokoffing",
-        "repo": "Betterfox",
-        "type": "github"
-      }
-    },
     "brew-api": {
       "flake": false,
       "locked": {
@@ -112,22 +80,6 @@
         "type": "github"
       }
     },
-    "firefox-csshacks": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1780196851,
-        "narHash": "sha256-EouTytS0ji/R7AfPsjhwGaMONmlxVpXCJIyPNpC7tOs=",
-        "owner": "MrOtherGuy",
-        "repo": "firefox-csshacks",
-        "rev": "f460dc79bedcb5cd077dfb8e14e9d46e1881c0e3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "MrOtherGuy",
-        "repo": "firefox-csshacks",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -197,22 +149,6 @@
       "original": {
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "type": "github"
-      }
-    },
-    "fx-autoconfig": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1777913309,
-        "narHash": "sha256-czNgt62fofg3hXw7F4wXSv/+ZAsGtO6bg3sUOiUXcu4=",
-        "owner": "MrOtherGuy",
-        "repo": "fx-autoconfig",
-        "rev": "d469a80f12e286c0e937d8b93c01dfc2d55dca8f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "MrOtherGuy",
-        "repo": "fx-autoconfig",
         "type": "github"
       }
     },
@@ -499,15 +435,11 @@
     },
     "root": {
       "inputs": {
-        "arkenfox": "arkenfox",
-        "betterfox": "betterfox",
         "brew-api": "brew-api",
         "brew-nix": "brew-nix",
         "emacs-overlay": "emacs-overlay",
-        "firefox-csshacks": "firefox-csshacks",
         "flake-file": "flake-file",
         "flake-parts": "flake-parts",
-        "fx-autoconfig": "fx-autoconfig",
         "git-hooks": "git-hooks",
         "home-manager": "home-manager",
         "homebrew-cask": "homebrew-cask",
@@ -522,8 +454,7 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
         "sops": "sops",
-        "treefmt": "treefmt",
-        "uc-scripts": "uc-scripts"
+        "treefmt": "treefmt"
       }
     },
     "sops": {
@@ -563,22 +494,6 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "uc-scripts": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1767720625,
-        "narHash": "sha256-VrOgKNPJ3iTRqXqHYQz8UrZ6FpC1vHWwgy11AAfe4o8=",
-        "owner": "aminomancer",
-        "repo": "uc.css.js",
-        "rev": "88514013ddc375f4770f4a35d8d07a91d6dd7d8f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "aminomancer",
-        "repo": "uc.css.js",
         "type": "github"
       }
     }

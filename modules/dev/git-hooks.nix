@@ -18,8 +18,8 @@
         typos = {
           enable = true;
           excludes = [
-            "secrets/*"
-            "\.sops\.yaml"
+            "^secrets/"
+            "^\.sops\.yaml$"
             "\.el$"
           ];
         };
