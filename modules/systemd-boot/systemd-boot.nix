@@ -9,9 +9,6 @@
         efi.canTouchEfiVariables = true;
         timeout = 3;
       };
-      initrd = {
-        systemd.enable = true;
-      };
     };
   };
 }

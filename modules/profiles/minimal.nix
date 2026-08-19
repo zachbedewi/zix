@@ -10,6 +10,9 @@ in
       imports = with self.modules.nixos; [
         nix
         nixpkgsCfg
+
+        boot
+        locale
       ];
 
       system.stateVersion = "25.05";
@@ -19,6 +22,8 @@ in
       imports = with self.modules.darwin; [
         nix
         nixpkgsCfg
+
+        locale
 
         macos-fixes
 

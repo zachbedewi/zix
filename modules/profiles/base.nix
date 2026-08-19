@@ -7,6 +7,7 @@
         system-packages
 
         ssh
+        sudo
         firmware
         networking
         home-manager
@@ -21,6 +22,7 @@
         system-packages
 
         ssh
+        sudo
         home-manager
         sops
 
