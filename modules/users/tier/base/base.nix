@@ -4,7 +4,7 @@
       home-directory
 
       xdg
-      sops
+      secrets
 
       shellAliases
       zsh

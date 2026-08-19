@@ -3,6 +3,15 @@ keys:
   - &cocoon age12nz0tyng5l79x4jj3lslwfdcs4y66dx5y7wqs4w03faq5zh6myxq4refjd
 
 creation_rules:
+  # Per-user secrets. Recipients are the host keys of the machines that user
+  # uses, plus the admin key. Users are not identities; adding a machine means
+  # adding its host key here and running `sops updatekeys`.
+  - path_regex: secrets/users/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *admin
+          - *cocoon
+
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
       - age:

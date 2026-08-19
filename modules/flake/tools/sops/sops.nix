@@ -7,9 +7,5 @@
     darwin.sops = {
       imports = [ inputs.sops.darwinModules.sops ];
     };
-
-    homeManager.sops = {
-      imports = [ inputs.sops.homeManagerModules.sops ];
-    };
   };
 }

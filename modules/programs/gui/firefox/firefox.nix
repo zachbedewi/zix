@@ -1,73 +1,72 @@
 { inputs, ... }: {
   flake.modules = {
-    darwin.firefox =
-      { pkgs, ... }:
-      let
-        configJs = "${inputs.fx-autoconfig}/program/config.js";
-        configPrefsJs = "${inputs.fx-autoconfig}/program/defaults/pref/config-prefs.js";
-        firefoxApp = "/Applications/Firefox.app";
-        resourcesDir = "${firefoxApp}/Contents/Resources";
+    darwin.firefox = { pkgs, ... }:
+    # let
+    # configJs = "${inputs.fx-autoconfig}/program/config.js";
+    # configPrefsJs = "${inputs.fx-autoconfig}/program/defaults/pref/config-prefs.js";
+    # firefoxApp = "/Applications/Firefox.app";
+    # resourcesDir = "${firefoxApp}/Contents/Resources";
 
-        patchScript = pkgs.writeShellScript "patch-firefox-autoconfig" ''
-          set -euo pipefail
+    # patchScript = pkgs.writeShellScript "patch-firefox-autoconfig" ''
+    #   set -euo pipefail
 
-          RESOURCES="${resourcesDir}"
-          LOG="$HOME/Library/Logs/firefox-autoconfig.log"
+    #   RESOURCES="${resourcesDir}"
+    #   LOG="$HOME/Library/Logs/firefox-autoconfig.log"
 
-          log() { echo "$(date '+%Y-%m-%d %H:%M:%S') $1" >> "$LOG"; }
+    #   log() { echo "$(date '+%Y-%m-%d %H:%M:%S') $1" >> "$LOG"; }
 
-          if [ ! -d "${firefoxApp}" ]; then
-            log "Firefox.app not found at ${firefoxApp}"
-            exit 0
-          fi
+    #   if [ ! -d "${firefoxApp}" ]; then
+    #     log "Firefox.app not found at ${firefoxApp}"
+    #     exit 0
+    #   fi
 
-          if ! cmp -s "${configJs}" "$RESOURCES/config.js" 2>/dev/null; then
-            cp "${configJs}" "$RESOURCES/config.js"
-            log "Installed config.js"
-          fi
+    #   if ! cmp -s "${configJs}" "$RESOURCES/config.js" 2>/dev/null; then
+    #     cp "${configJs}" "$RESOURCES/config.js"
+    #     log "Installed config.js"
+    #   fi
 
-          mkdir -p "$RESOURCES/defaults/pref"
-          if ! cmp -s "${configPrefsJs}" "$RESOURCES/defaults/pref/config-prefs.js" 2>/dev/null; then
-            cp "${configPrefsJs}" "$RESOURCES/defaults/pref/config-prefs.js"
-            log "Installed config-prefs.js"
-          fi
+    #   mkdir -p "$RESOURCES/defaults/pref"
+    #   if ! cmp -s "${configPrefsJs}" "$RESOURCES/defaults/pref/config-prefs.js" 2>/dev/null; then
+    #     cp "${configPrefsJs}" "$RESOURCES/defaults/pref/config-prefs.js"
+    #     log "Installed config-prefs.js"
+    #   fi
 
-          log "Firefox autoconfig patch verified"
-        '';
-      in
-      {
-        nixpkgs.overlays = [ inputs.nur.overlays.default ];
+    #   log "Firefox autoconfig patch verified"
+    # '';
+    # in
+    {
+      nixpkgs.overlays = [ inputs.nur.overlays.default ];
 
-        homebrew.casks = [ "firefox" ];
+      # homebrew.casks = [ "firefox" ];
 
-        launchd.user.agents.firefox-autoconfig = {
-          serviceConfig = {
-            ProgramArguments = [
-              "/bin/sh"
-              "-c"
-              "${patchScript}"
-            ];
-            WatchPaths = [ firefoxApp ];
-            RunAtLoad = true;
-          };
-        };
+      # launchd.user.agents.firefox-autoconfig = {
+      #   serviceConfig = {
+      #     ProgramArguments = [
+      #       "/bin/sh"
+      #       "-c"
+      #       "${patchScript}"
+      #     ];
+      #     WatchPaths = [ firefoxApp ];
+      #     RunAtLoad = true;
+      #   };
+      # };
 
-        system.defaults.CustomUserPreferences."org.mozilla.firefox" = {
-          EnterprisePoliciesEnabled = true;
-          DisableTelemetry = true;
-          DisablePocket = true;
-          DisableFirefoxStudies = true;
-          NoDefaultBookmarks = true;
-          OfferToSaveLogins = false;
-          PasswordManagerEnabled = false;
-          EnableTrackingProtection = {
-            Value = true;
-            Locked = true;
-            Cryptomining = true;
-            Fingerprinting = true;
-          };
+      system.defaults.CustomUserPreferences."org.mozilla.firefox" = {
+        EnterprisePoliciesEnabled = true;
+        DisableTelemetry = true;
+        DisablePocket = true;
+        DisableFirefoxStudies = true;
+        NoDefaultBookmarks = true;
+        OfferToSaveLogins = false;
+        PasswordManagerEnabled = false;
+        EnableTrackingProtection = {
+          Value = true;
+          Locked = true;
+          Cryptomining = true;
+          Fingerprinting = true;
         };
       };
+    };
 
     nixos.firefox = {
       nixpkgs.overlays = [ inputs.nur.overlays.default ];

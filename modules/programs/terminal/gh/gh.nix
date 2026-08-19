@@ -1,22 +1,15 @@
 _: {
-  flake.modules = {
-    darwin.gh = {
-      sops.secrets.gh_token = { };
+  flake.modules.homeManager.gh = { config, ... }: {
+    zix.secrets.gh_token = { };
+
+    programs.gh = {
+      enable = true;
+      settings.git_protocol = "ssh";
     };
 
-    nixos.gh = {
-      sops.secrets.gh_token = { };
-    };
-
-    homeManager.gh = _: {
-      programs.gh = {
-        enable = true;
-        settings.git_protocol = "ssh";
-      };
-
-      programs.zsh.initContent = ''
-        export GH_TOKEN="$(cat /run/secrets/gh_token 2>/dev/null)"
-      '';
-    };
+    programs.zsh.initContent = ''
+      [[ -r ${config.zix.secrets.gh_token.path} ]] &&
+        export GH_TOKEN="$(cat ${config.zix.secrets.gh_token.path})"
+    '';
   };
 }

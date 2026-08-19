@@ -22,6 +22,8 @@
         imports = with self.modules.homeManager; [
           gnome
           desktop
+
+          gh
         ];
         home.packages = with pkgs; [ mediainfo ];
       };
