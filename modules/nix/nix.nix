@@ -1,12 +1,7 @@
 { inputs, ... }:
 let
   common =
-    {
-      config,
-      pkgs,
-      lib,
-      ...
-    }:
+    { config, lib, ... }:
     let
       inherit (lib.types) isType;
       inherit (lib.attrsets) mapAttrsToList filterAttrs mapAttrs;
@@ -23,6 +18,8 @@ let
 
           nixPath = mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry;
 
+          channel.enable = false;
+
           gc = {
             automatic = true;
             options = "--delete-older-than 30d";
@@ -35,42 +32,23 @@ let
           settings = {
             use-xdg-base-directories = true;
 
-            use-registries = true;
-            flake-registry = pkgs.writeText "flakes-empty.json" (
-              builtins.toJSON {
-                flakes = [ ];
-                version = 2;
-              }
-            );
+            flake-registry = "";
 
-            substituters = [
-              "https://cache.nixos.org?priority=10"
-              "https://nix-community.cachix.org"
-            ];
+            extra-substituters = [ "https://nix-community.cachix.org" ];
+            extra-trusted-public-keys = [ "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" ];
 
-            trusted-public-keys = [
-              "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-              "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-            ];
-
-            min-free = "${toString (5 * 1024 * 1024 * 1024)}";
-            max-free = "${toString (10 * 1024 * 1024 * 1024)}";
-
-            auto-optimise-store = true;
-
-            allowed-users = [
-              "root"
-              "@wheel"
-            ];
-            trusted-users = [
-              "root"
-              "@wheel"
-            ];
+            min-free = 5 * 1024 * 1024 * 1024;
+            max-free = 10 * 1024 * 1024 * 1024;
 
             max-jobs = "auto";
 
+            fallback = true;
             keep-going = true;
 
+            builders-use-substitutes = true;
+
+            http-connections = 35;
+            max-substitution-jobs = 32;
             stalled-download-timeout = 20;
 
             log-lines = 30;
@@ -81,9 +59,7 @@ let
               "pipe-operators"
             ];
 
-            pure-eval = false;
             warn-dirty = false;
-            http-connections = 35;
             accept-flake-config = false;
             keep-derivations = true;
             keep-outputs = true;
@@ -95,7 +71,6 @@ let
     nix = {
       gc = {
         dates = "Sat *-*-* 03:00";
-        persistent = true;
       };
 
       optimise = {
@@ -103,6 +78,12 @@ let
       };
 
       settings = {
+        allowed-users = [
+          "root"
+          "@wheel"
+        ];
+        trusted-users = [ "@wheel" ];
+
         sandbox = true;
         sandbox-fallback = false;
       };
@@ -111,21 +92,20 @@ let
 
   darwin = {
     nix = {
+      daemonIOLowPriority = true;
+
       settings = {
         allowed-users = [
           "root"
           "@admin"
         ];
-        trusted-users = [
-          "root"
-          "@admin"
-        ];
+        trusted-users = [ "@admin" ];
       };
 
       gc = {
         interval = [
           {
-            Hour = 3;
+            Hour = 19;
             Minute = 0;
             Weekday = 6;
           }
@@ -135,7 +115,7 @@ let
       optimise = {
         interval = [
           {
-            Hour = 4;
+            Hour = 20;
             Minute = 0;
           }
         ];
