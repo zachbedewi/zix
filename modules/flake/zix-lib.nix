@@ -5,7 +5,10 @@
   ...
 }:
 let
-  mkBuilders = import ../_lib/builders.nix { inherit inputs lib; };
+  mkBuilders = import ../_lib/builders.nix {
+    inherit inputs lib;
+    inherit (self) overlays;
+  };
   mkFactory = import ../_lib/factory.nix;
 in
 {

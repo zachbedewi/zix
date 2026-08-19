@@ -1,4 +1,9 @@
-{ inputs, lib }: modules: {
+{
+  inputs,
+  lib,
+  overlays,
+}:
+modules: {
   mkNixos = system: name: {
     ${name} = inputs.nixpkgs.lib.nixosSystem {
       modules = [
@@ -28,7 +33,7 @@
       pkgs = inputs.nixpkgs.legacyPackages.${system};
       modules = [
         modules.homeManager.${name}
-        { nixpkgs.config.allowUnfree = true; }
+        { nixpkgs = import ./nixpkgs.nix overlays; }
       ];
     };
   };

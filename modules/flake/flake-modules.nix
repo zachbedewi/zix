@@ -1,11 +1,17 @@
 {
   inputs,
+  self,
   config,
   lib,
   ...
 }:
 let
-  mkBuilders = import ../_lib/builders.nix { inherit inputs lib; };
+  # zix's own overlays, captured here because the `modules` function below
+  # shadows `self` with the consumer's.
+  mkBuilders = import ../_lib/builders.nix {
+    inherit inputs lib;
+    inherit (self) overlays;
+  };
   mkFactory = import ../_lib/factory.nix;
 
   zixModules = config.flake.modules;

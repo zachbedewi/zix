@@ -1,13 +1,7 @@
 { self, ... }:
 let
   nixpkgsCfg = {
-    nixpkgs.config.allowUnfree = true;
-    nixpkgs.overlays = with self.overlays; [
-      stable
-      unstable
-
-      nur
-    ];
+    nixpkgs = import ../_lib/nixpkgs.nix self.overlays;
   };
 in
 {
