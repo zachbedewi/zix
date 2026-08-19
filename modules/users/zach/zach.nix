@@ -6,7 +6,10 @@
 }:
 {
   flake.modules = lib.mkMerge [
-    (factory.user "zach" true)
+    (factory.user "zach" {
+      admin = true;
+      desktop = "hyprland";
+    })
     {
       nixos.zach = {
         users.users.zach = {
@@ -17,7 +20,6 @@
 
       homeManager.zach = { pkgs, ... }: {
         imports = with self.modules.homeManager; [
-          gnome
           desktop
 
           gh

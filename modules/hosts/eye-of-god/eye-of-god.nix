@@ -3,7 +3,6 @@
     imports = with self.modules.nixos; [
       systemd-boot
       chrony
-      gnome
       desktop
     ];
   };

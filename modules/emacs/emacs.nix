@@ -106,7 +106,7 @@
 
           sessionPath = [ "$HOME/.config/emacs/bin" ];
 
-          file.".config/doom".source = config.lib.file.mkOutOfStoreSymlink "${flakeRoot}/modules/programs/gui/emacs/doom.d";
+          file.".config/doom".source = config.lib.file.mkOutOfStoreSymlink "${flakeRoot}/modules/emacs/doom.d";
 
           activation.doom-emacs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
             export PATH="${

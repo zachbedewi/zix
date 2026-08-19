@@ -12,6 +12,8 @@
         networking
         home-manager
         sops
+
+        desktops
       ];
     };
 

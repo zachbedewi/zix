@@ -48,7 +48,8 @@ profiles and concerns, plus a `flake-parts.nix` that calls the builder. Hostname
 is derived from the directory name, so do not set `networking.hostName`.
 
 **A new user** → `modules/users/<username>/`, with `<username>.nix` calling
-`factory.user` and a `flake-parts.nix` for the standalone home configuration.
+`factory.user <username> { admin = ...; desktop = ...; }` and a `flake-parts.nix`
+for the standalone home configuration. See [Desktops](#desktops) for `desktop`.
 
 **Something reusable by more than one module** → a plain function in
 `modules/_lib/`, imported explicitly. Not a module.
@@ -114,12 +115,114 @@ the answer to "what does a host get, versus a user?"
 | Profile | Contains |
 | --- | --- |
 | `minimal` | Nix itself, nixpkgs config and overlays, platform workarounds |
-| `base` | `minimal` plus ssh, home-manager, sops, and a baseline shell |
+| `base` | `minimal` plus ssh, home-manager, sops, desktops, and a baseline shell |
 | `desktop` | `base` plus fonts, terminal, editor, window management |
 
 One file per profile, declaring all of its classes: `profiles/base.nix` defines
 `nixos.base`, `darwin.base` and `homeManager.base` together, so both halves of a
 profile are visible at once.
+
+## Desktops
+
+A desktop is the one concern where the host is *not* in charge. **A user declares
+which DE or WM they use; the machine derives what it has to install.** One
+machine can therefore carry several users on different desktops — one on
+Hyprland and another on GNOME, both working, with the host naming neither.
+
+`desktop` is a NixOS-only argument. The darwin half of `factory.user` ignores it;
+window management there is `aerospace`, which every user gets from
+`homeManager.desktop`.
+
+Three layers, each with exactly one job:
+
+| Layer | Scope | Declares |
+| --- | --- | --- |
+| `factory.user` | one user | `zix.desktops = [ "hyprland" ]` on the system, and imports `homeManager.hyprland` for that user alone |
+| `nixos.desktops` | the machine | the `zix.desktops` and `zix.greeter` options, and the single import of every desktop and greeter module |
+| `nixos.<desktop>`, `nixos.<greeter>` | the machine | `mkIf` on those options — inert unless something asked for them |
+
+A user picks a desktop by name, in `modules/users/<user>/<user>.nix`:
+
+```nix
+factory.user "zach" {
+  admin = true;
+  desktop = "hyprland";
+}
+```
+
+`zix.desktops` is a `listOf (enum [ ... ])`, so every user's choice merges into
+one list and each desktop module activates on `lib.elem "<name>"`. Two users on
+the same desktop is a no-op; two users on different desktops installs both.
+Neither `nixos.desktop` nor the host mentions a desktop by name.
+
+Nothing else needs wiring: `programs.hyprland` and
+`services.desktopManager.gnome` each register their session in
+`services.displayManager.sessionPackages`, so the greeter's session list follows
+from the same list.
+
+**Never import `nixos.<desktop>` directly** — not from a host, not from a
+profile, and not from `factory.user`. The module system does not deduplicate
+imports, so two users choosing the same desktop would import it twice: a
+duplicate-declaration error if it declares options, and silently doubled entries
+in every list-valued option if it does not. `nixos.desktops` is the one import
+site, and its imports are unconditional with `mkIf` inside, exactly as nixpkgs
+imports all of `module-list.nix`. Conditional `imports` cannot read `config`.
+
+That is also why `desktops` sits in `nixos.base` rather than `nixos.desktop`:
+`zix.desktops` is *declared* there while `nixos.<username>` modules *define* it,
+so the declaration has to be present on any host that imports a user. It costs
+nothing on a headless host, where the list is empty and every desktop module is
+switched off.
+
+### The greeter
+
+The greeter is machine-scoped — one per machine, whatever its users chose:
+
+```nix
+zix.greeter = "greetd";  # or "gdm", or "none"
+```
+
+It defaults to `none`, and to `greetd` (tuigreet) as soon as any user asks for a
+desktop, so a host normally never sets it. GNOME does not require GDM, so a
+GNOME user under greetd works.
+
+### Adding a desktop
+
+1. `modules/<name>/<name>.nix` with a `nixos.<name>` guarded on
+   `lib.elem "<name>" config.zix.desktops` holding **only** what the machine
+   needs (packages, session entry, portals), and a `homeManager.<name>` holding
+   **only** what a user needs (their config and their own packages).
+2. Add `<name>` to the enum and to the imports in
+   `modules/desktops/desktops.nix`.
+
+Keep the split honest: anything in the system half applies to every user on the
+machine, including ones who chose a different desktop.
+
+### Hyprland
+
+Configured in **Lua, not Nix**. Since Hyprland 0.55 hyprlang is deprecated in
+favour of `~/.config/hypr/hyprland.lua` and the `hl.*` API, so the config lives
+in real `.lua` files under `modules/hyprland/lua/`, listed in `extraLuaFiles`:
+
+```nix
+extraLuaFiles = {
+  "00-env" = ./lua/00-env.lua;
+  "40-binds" = ./lua/40-binds.lua;
+};
+```
+
+home-manager symlinks each one into `~/.config/hypr/` and generates a
+`hyprland.lua` that puts that directory on Lua's `package.path` and `require`s
+them **in sorted key order** — hence the numeric prefixes. To add to the config
+from a user directory, add a higher-numbered key; to replace a file, redefine its
+key with `lib.mkForce`.
+
+`package` and `portalPackage` are `null` on purpose: the system installs Hyprland
+behind `/run/wrappers/bin/Hyprland`, which needs `cap_sys_nice`, and a copy in
+the user profile would shadow the wrapper on `PATH`. Two consequences —
+`hypr/.luarc.json` is written by this module rather than by home-manager, and
+there is no reload-on-switch hook, so applying an edit is `nixos-rebuild switch`
+followed by `hyprctl reload`.
 
 ## Bootstrapping a host
 
@@ -366,7 +469,7 @@ modules and its own the same way, and the builders need no module argument:
 # modules/users/zbbedewi/zbbedewi.nix
 { self, factory, lib, ... }: {
   flake.modules = lib.mkMerge [
-    (factory.user "zbbedewi" true)
+    (factory.user "zbbedewi" { admin = true; })
     { homeManager.zbbedewi.imports = with self.modules.homeManager; [ desktop gh ]; }
   ];
 }

@@ -1,13 +1,12 @@
-{ self, ... }: {
+{
   flake.modules = {
-    nixos.gnome = {
-      home-manager.sharedModules = [ self.modules.homeManager.gnome ];
+    nixos.gnome =
+      { config, lib, ... }:
+      lib.mkIf (lib.elem "gnome" config.zix.desktops) {
+        services.desktopManager.gnome.enable = true;
 
-      services.displayManager.gdm.enable = true;
-      services.desktopManager.gnome.enable = true;
-
-      programs.dconf.enable = true;
-    };
+        programs.dconf.enable = true;
+      };
 
     homeManager.gnome = { pkgs, ... }: {
       home.packages = with pkgs; [

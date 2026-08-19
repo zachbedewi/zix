@@ -6,8 +6,8 @@
       enableBashIntegration = true;
 
       defaultCommand = "${lib.getExe pkgs.fd} --type=f --hidden --exclude=.git";
-      fileWidgetCommand = "${lib.getExe pkgs.fd} --type=f --hidden --exclude=.git";
-      changeDirWidgetCommand = "${lib.getExe pkgs.fd} --type=d --hidden --exclude=.git";
+      fileWidget.command = "${lib.getExe pkgs.fd} --type=f --hidden --exclude=.git";
+      changeDirWidget.command = "${lib.getExe pkgs.fd} --type=d --hidden --exclude=.git";
 
       defaultOptions = [
         "--layout=reverse"
