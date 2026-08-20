@@ -1,0 +1,115 @@
+set shell := ["bash", "-euo", "pipefail", "-c"]
+
+import? 'justfile.local'
+
+host := `hostname -s`
+user := env("USER")
+
+[private]
+default:
+    @just --list --unsorted
+
+# format every file in the tree
+fmt:
+    treefmt
+
+# formatting, lint and pre-commit hooks
+check:
+    nix flake check
+
+# run every pre-commit hook over the whole tree
+lint:
+    pre-commit run --all-files
+
+# evaluate every host and user configuration
+eval-all:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    fail=0
+    for attr in nixosConfigurations darwinConfigurations; do
+        for name in $(nix eval --raw --apply 'cs: builtins.concatStringsSep " " (builtins.attrNames cs)' ".#$attr" 2>/dev/null || true); do
+            printf '%s.%s ... ' "$attr" "$name"
+            if nix eval --raw ".#$attr.$name.config.system.build.toplevel.drvPath" >/dev/null; then
+                echo ok
+            else
+                echo FAILED
+                fail=1
+            fi
+        done
+    done
+    for name in $(nix eval --raw --apply 'cs: builtins.concatStringsSep " " (builtins.attrNames cs)' '.#homeConfigurations' 2>/dev/null || true); do
+        printf 'homeConfigurations.%s ... ' "$name"
+        if nix eval --raw ".#homeConfigurations.$name.config.home.homeDirectory" >/dev/null; then
+            echo ok
+        else
+            echo FAILED
+            fail=1
+        fi
+    done
+    exit "$fail"
+
+# build this machine's configuration without activating it
+build target=host:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [[ "{{ os() }}" == "macos" ]]; then
+        nh darwin build . --hostname "{{ target }}"
+    else
+        nh os build . --hostname "{{ target }}"
+    fi
+
+# build and activate this machine's configuration
+switch target=host:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [[ "{{ os() }}" == "macos" ]]; then
+        nh darwin switch . --hostname "{{ target }}"
+    else
+        nh os switch . --hostname "{{ target }}"
+    fi
+
+# activate on next boot only (NixOS)
+boot target=host:
+    nh os boot . --hostname "{{ target }}"
+
+# activate without adding a boot entry (NixOS)
+test target=host:
+    nh os test . --hostname "{{ target }}"
+
+# build and activate a standalone home-manager configuration
+home target=user:
+    nh home switch . --configuration "{{ target }}"
+
+# load a configuration in a nix repl
+repl:
+    nix repl .
+
+# update every flake input, or just the ones named
+update *inputs:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [[ -z "{{ inputs }}" ]]; then
+        nix flake update
+    else
+        nix flake update {{ inputs }}
+    fi
+
+# regenerate flake.nix from the flake-file.inputs declarations
+flake:
+    nix run .#write-flake
+
+# search nixpkgs and NixOS/home-manager options
+search query:
+    nh search "{{ query }}"
+
+# remove old generations and collect garbage
+clean:
+    nh clean all
+
+# edit an encrypted secrets file
+secrets file="secrets/main.yaml":
+    sops edit "{{ file }}"
+
+# install a host; see "Bootstrapping a host" in the README
+bootstrap *args:
+    zix-bootstrap {{ args }}

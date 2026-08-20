@@ -3,6 +3,7 @@
 # Using $'\Uxxxxxxxx' syntax so codepoints are explicit and editor-safe
 
 # Workspace icons (keyed by aerospace workspace ID)
+# shellcheck disable=SC2034  # consumed by items/spaces.sh and plugins/aerospace.sh
 declare -A WORKSPACE_ICONS
 WORKSPACE_ICONS[T]=$'\ue795'     # nf-dev-terminal
 WORKSPACE_ICONS[W]=$'\U000f059f' # nf-md-web

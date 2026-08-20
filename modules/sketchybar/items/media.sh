@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 # Media / now playing item
 
+# shellcheck source=colors.sh
 source "$CONFIG_DIR/colors.sh"
 
 sketchybar --add item media center \
   --set media \
   icon=󰝚 \
-  icon.color=$COLOR_VIOLET \
+  icon.color="$COLOR_VIOLET" \
   label.max_chars=40 \
-  label.color=$COLOR_DIM \
+  label.color="$COLOR_DIM" \
   scroll_texts=on \
   updates=on \
   script="$PLUGIN_DIR/media.sh" \

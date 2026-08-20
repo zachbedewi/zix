@@ -1,22 +1,22 @@
 -- Kanagawa, matching modules/kitty and modules/starship
 local crystalBlue = "rgba(7e9cd8ee)"
-local oniViolet   = "rgba(957fb8ee)"
-local fujiGray    = "rgba(727169aa)"
+local oniViolet = "rgba(957fb8ee)"
+local fujiGray = "rgba(727169aa)"
 
 hl.config({
     general = {
-        gaps_in  = 5,
+        gaps_in = 5,
         gaps_out = 10,
 
         border_size = 2,
 
         col = {
-            active_border   = { colors = { crystalBlue, oniViolet }, angle = 45 },
+            active_border = { colors = { crystalBlue, oniViolet }, angle = 45 },
             inactive_border = fujiGray,
         },
 
         resize_on_border = true,
-        allow_tearing    = false,
+        allow_tearing = false,
 
         layout = "dwindle",
     },
@@ -30,8 +30,8 @@ hl.config({
 
         blur = {
             enabled = true,
-            size    = 3,
-            passes  = 2,
+            size = 3,
+            passes = 2,
         },
     },
 
@@ -45,6 +45,6 @@ hl.config({
 
     misc = {
         force_default_wallpaper = 0,
-        disable_hyprland_logo   = true,
+        disable_hyprland_logo = true,
     },
 })

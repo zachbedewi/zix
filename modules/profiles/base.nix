@@ -51,6 +51,7 @@
         zoxide
         direnv
         delta
+        nh
       ];
 
       home.stateVersion = "26.05";

@@ -1,19 +1,19 @@
 hl.window_rule({
-    name  = "suppress-maximize-events",
+    name = "suppress-maximize-events",
     match = { class = ".*" },
 
     suppress_event = "maximize",
 })
 
 hl.window_rule({
-    name  = "fix-xwayland-drags",
+    name = "fix-xwayland-drags",
     match = {
-        class      = "^$",
-        title      = "^$",
-        xwayland   = true,
-        float      = true,
+        class = "^$",
+        title = "^$",
+        xwayland = true,
+        float = true,
         fullscreen = false,
-        pin        = false,
+        pin = false,
     },
 
     no_focus = true,

@@ -1,34 +1,56 @@
-{ inputs, ... }: {
+{
   perSystem =
     {
-      pkgs,
       config,
-      system,
+      lib,
+      pkgs,
       ...
     }:
     {
-      devShells = {
-        default = pkgs.mkShell {
-          inherit (config.pre-commit) shellHook;
-
-          packages =
-            with pkgs;
-            [
-              config.formatter
-              config.packages.bootstrap
-
-              nixd
-
-              sops
-              age
-
-              inputs.disko.packages.${system}.disko
-              inputs.nixos-anywhere.packages.${system}.default
-            ]
-            ++ config.pre-commit.settings.enabledPackages;
-
-          inputsFrom = [ config.treefmt.build.devShell ];
+      options.zix.dev = {
+        extraPackages = lib.mkOption {
+          type = lib.types.listOf lib.types.package;
+          default = [ ];
         };
+
+        extraShellHook = lib.mkOption {
+          type = lib.types.lines;
+          default = "";
+        };
+      };
+
+      config.devShells.default = pkgs.mkShell {
+        shellHook = config.pre-commit.shellHook + config.zix.dev.extraShellHook;
+
+        packages =
+          with pkgs;
+          [
+            config.formatter
+
+            nixd
+
+            bash-language-server
+            shellcheck
+            shfmt
+
+            lua-language-server
+            stylua
+
+            marksman
+
+            taplo
+            vscode-langservers-extracted
+            yaml-language-server
+
+            nh
+
+            age
+            sops
+          ]
+          ++ config.zix.dev.extraPackages
+          ++ config.pre-commit.settings.enabledPackages;
+
+        inputsFrom = [ config.treefmt.build.devShell ];
       };
     };
 }

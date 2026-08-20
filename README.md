@@ -112,11 +112,11 @@ Rationale belongs in the commit message.
 Profiles are the only modules that exist purely to compose others, and they are
 the answer to "what does a host get, versus a user?"
 
-| Profile | Contains |
-| --- | --- |
-| `minimal` | Nix itself, nixpkgs config and overlays, platform workarounds |
-| `base` | `minimal` plus ssh, home-manager, sops, desktops, and a baseline shell |
-| `desktop` | `base` plus fonts, terminal, editor, window management |
+| Profile   | Contains                                                               |
+| --------- | ---------------------------------------------------------------------- |
+| `minimal` | Nix itself, nixpkgs config and overlays, platform workarounds          |
+| `base`    | `minimal` plus ssh, home-manager, sops, desktops, and a baseline shell |
+| `desktop` | `base` plus fonts, terminal, editor, window management                 |
 
 One file per profile, declaring all of its classes: `profiles/base.nix` defines
 `nixos.base`, `darwin.base` and `homeManager.base` together, so both halves of a
@@ -135,11 +135,11 @@ window management there is `aerospace`, which every user gets from
 
 Three layers, each with exactly one job:
 
-| Layer | Scope | Declares |
-| --- | --- | --- |
-| `factory.user` | one user | `zix.desktops = [ "hyprland" ]` on the system, and imports `homeManager.hyprland` for that user alone |
-| `nixos.desktops` | the machine | the `zix.desktops` and `zix.greeter` options, and the single import of every desktop and greeter module |
-| `nixos.<desktop>`, `nixos.<greeter>` | the machine | `mkIf` on those options — inert unless something asked for them |
+| Layer                                | Scope       | Declares                                                                                                |
+| ------------------------------------ | ----------- | ------------------------------------------------------------------------------------------------------- |
+| `factory.user`                       | one user    | `zix.desktops = [ "hyprland" ]` on the system, and imports `homeManager.hyprland` for that user alone   |
+| `nixos.desktops`                     | the machine | the `zix.desktops` and `zix.greeter` options, and the single import of every desktop and greeter module |
+| `nixos.<desktop>`, `nixos.<greeter>` | the machine | `mkIf` on those options — inert unless something asked for them                                         |
 
 A user picks a desktop by name, in `modules/users/<user>/<user>.nix`:
 
@@ -284,30 +284,30 @@ matters to you.
 against a host that is already declared in this flake — it never invents a host
 for you, and it never commits, pushes or touches a running system.
 
-| Step | What happens |
-| --- | --- |
-| preflight | resolves the repo root, checks `modules/hosts/<host>/` exists, echoes the target |
-| hardware | runs `nixos-facter` and writes `modules/hosts/<host>/facter.json`, then `git add -N`s it, because a file git does not know about is invisible to the flake |
-| flake checks | evaluates the host's `toplevel` and reads `disko.devices.disk`, so a broken config fails before any disk is touched |
-| secrets | generates the host's ed25519 key, converts it to an age recipient with `ssh-to-age`, adds it to `.sops.yaml`, and rekeys every secret with `sops updatekeys` |
-| install | prints the disks, demands confirmation, then partitions, formats and installs |
+| Step         | What happens                                                                                                                                                 |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| preflight    | resolves the repo root, checks `modules/hosts/<host>/` exists, echoes the target                                                                             |
+| hardware     | runs `nixos-facter` and writes `modules/hosts/<host>/facter.json`, then `git add -N`s it, because a file git does not know about is invisible to the flake   |
+| flake checks | evaluates the host's `toplevel` and reads `disko.devices.disk`, so a broken config fails before any disk is touched                                          |
+| secrets      | generates the host's ed25519 key, converts it to an age recipient with `ssh-to-age`, adds it to `.sops.yaml`, and rekeys every secret with `sops updatekeys` |
+| install      | prints the disks, demands confirmation, then partitions, formats and installs                                                                                |
 
 Each step is idempotent. An existing report is reused unless you pass
 `--refresh-facter`, and an existing `.sops.yaml` entry for the host is updated in
 place rather than duplicated — anchors, aliases and comments all survive.
 
-| Option | Meaning |
-| --- | --- |
-| `--target <[user@]addr>` | install onto a remote installer over ssh, with nixos-anywhere. Bare addresses get `root@` |
-| `--local` | install onto the machine running the script, which must be an installer with the disks attached |
-| `--ssh-port <port>` | port of the *installer's* sshd, default 22. Not the port the host ends up on |
-| `--host-key <file>` | reuse an ed25519 private key as the host key instead of generating one |
-| `--save-host-key <dir>` | also write the generated key to `<dir>` |
-| `--refresh-facter` | regenerate the report even if one exists |
-| `--no-facter` | do not generate a report |
-| `--no-secrets` | do not provision a host key and do not touch `.sops.yaml` |
-| `--dry-run` | print every command that would run, change nothing |
-| `-y`, `--yes` | skip the confirmation prompt |
+| Option                   | Meaning                                                                                         |
+| ------------------------ | ----------------------------------------------------------------------------------------------- |
+| `--target <[user@]addr>` | install onto a remote installer over ssh, with nixos-anywhere. Bare addresses get `root@`       |
+| `--local`                | install onto the machine running the script, which must be an installer with the disks attached |
+| `--ssh-port <port>`      | port of the *installer's* sshd, default 22. Not the port the host ends up on                    |
+| `--host-key <file>`      | reuse an ed25519 private key as the host key instead of generating one                          |
+| `--save-host-key <dir>`  | also write the generated key to `<dir>`                                                         |
+| `--refresh-facter`       | regenerate the report even if one exists                                                        |
+| `--no-facter`            | do not generate a report                                                                        |
+| `--no-secrets`           | do not provision a host key and do not touch `.sops.yaml`                                       |
+| `--dry-run`              | print every command that would run, change nothing                                              |
+| `-y`, `--yes`            | skip the confirmation prompt                                                                    |
 
 Four things are worth knowing before the first run.
 
@@ -444,11 +444,11 @@ breaking any clone that lacks access.
 
 That single import provides:
 
-| flakeModule | Provides |
-| --- | --- |
-| `plumbing` | flake-parts, flake-file, home-manager and nix-darwin flakeModules, including the `darwinConfigurations` option |
-| `modules` | zix's `flake.modules` merged into your own, plus `zix-lib` and `factory` rebound to your flake |
-| `default` | both |
+| flakeModule | Provides                                                                                                       |
+| ----------- | -------------------------------------------------------------------------------------------------------------- |
+| `plumbing`  | flake-parts, flake-file, home-manager and nix-darwin flakeModules, including the `darwinConfigurations` option |
+| `modules`   | zix's `flake.modules` merged into your own, plus `zix-lib` and `factory` rebound to your flake                 |
+| `default`   | both                                                                                                           |
 
 Take them separately if you want zix's modules but your own plumbing.
 

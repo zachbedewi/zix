@@ -42,6 +42,8 @@ let
   };
 in
 {
+  imports = [ inputs.flake-parts.flakeModules.flakeModules ];
+
   flake.flakeModules = {
     inherit modules plumbing;
 

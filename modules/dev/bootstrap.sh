@@ -218,7 +218,7 @@ step "Preflight"
 
 command -v nix >/dev/null || die "nix is not on PATH"
 REPO=$(git rev-parse --show-toplevel 2>/dev/null) || die "not inside a git work tree"
-cd "$REPO"
+cd "$REPO" || die "cannot enter repo root: $REPO"
 
 HOST_DIR="modules/hosts/$HOST"
 REPORT="$HOST_DIR/facter.json"

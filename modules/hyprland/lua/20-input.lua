@@ -3,7 +3,7 @@ hl.config({
         kb_layout = "us",
 
         follow_mouse = 1,
-        sensitivity  = 0,
+        sensitivity = 0,
 
         touchpad = {
             natural_scroll = true,
@@ -12,7 +12,7 @@ hl.config({
 })
 
 hl.gesture({
-    fingers   = 3,
+    fingers = 3,
     direction = "horizontal",
-    action    = "workspace",
+    action = "workspace",
 })

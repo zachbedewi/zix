@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Battery updater
 
+# shellcheck source=colors.sh
 source "$CONFIG_DIR/colors.sh"
 
 PERCENTAGE="$(pmset -g batt | grep -Eo "\d+%" | cut -d% -f1)"

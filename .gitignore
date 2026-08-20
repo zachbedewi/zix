@@ -1,5 +1,6 @@
 .claude
 docs
 .pre-commit-config.yaml
+/justfile
 .direnv/
 result
