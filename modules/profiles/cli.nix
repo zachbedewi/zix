@@ -19,6 +19,8 @@
         ripgrep-all
         sd
         tealdeer
+        tmux
+        zellij
         zoxide
         # keep-sorted end
       ];
