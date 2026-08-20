@@ -51,7 +51,7 @@
         zoxide
         direnv
         delta
-        nh
+        nix-tools
       ];
 
       home.stateVersion = "26.05";
