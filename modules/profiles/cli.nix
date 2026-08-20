@@ -7,20 +7,36 @@
         bottom
         btop
         cheat
+        csvkit
+        duckdb
         duf
         dust
         eza
         fd
         fzf
+        gron
         hyperfine
+        jaq
+        just
+        miller
         navi
+        ouch
+        p7zip
+        pandoc
         procs
         ripgrep
         ripgrep-all
         sd
         tealdeer
         tmux
+        unar
+        unzip
+        visidata
+        watchexec
+        yazi
+        yq-go
         zellij
+        zip
         zoxide
         # keep-sorted end
       ];
