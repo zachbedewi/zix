@@ -46,9 +46,6 @@
         starship
 
         git
-        eza
-        fzf
-        zoxide
         direnv
         delta
         nix-tools
