@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  flake.modules.darwin.homebrew = { config, ... }: {
+  flake.modules.darwin.homebrew = { config, lib, ... }: {
     imports = [
       inputs.brew-nix.darwinModules.default
       inputs.nix-homebrew.darwinModules.nix-homebrew
@@ -28,7 +28,13 @@
         upgrade = true;
         cleanup = "none";
       };
-      taps = builtins.attrNames config.nix-homebrew.taps;
+      # Homebrew 6.0.0 refuses to load formulae from untrusted non-official taps,
+      # which aborts activation. Every tap here comes from a pinned flake input,
+      # so trust them all; official taps ignore the option.
+      taps = lib.mapAttrsToList (name: _: {
+        inherit name;
+        trusted = true;
+      }) config.nix-homebrew.taps;
     };
   };
 }

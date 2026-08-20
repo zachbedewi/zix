@@ -5,7 +5,6 @@
       nix-homebrew.taps."d12frosted/homebrew-emacs-plus" = inputs.homebrew-emacs-plus;
 
       homebrew = {
-        taps = [ "d12frosted/emacs-plus" ];
         brews = [
           {
             name = "emacs-plus@30";
@@ -74,7 +73,7 @@
               ))
 
               # Org-mode / LaTeX
-              texlive.combined.scheme-medium
+              texliveMedium
               graphviz
               pandoc
 
