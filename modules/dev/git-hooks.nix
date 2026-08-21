@@ -21,6 +21,7 @@
             "^secrets/"
             "^\.sops\.yaml$"
             "\.el$"
+            "\facter.json$"
           ];
           settings.ignored-words = [ "facter" ];
         };

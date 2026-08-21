@@ -245,6 +245,15 @@ addressed by `/dev/disk/by-partlabel/`, which replaces a hand-written
 `boot.supportedFilesystems`, autoScrub, trim, and derives the required
 `networking.hostId` from the hostname.
 
+A host that wipes its root on every boot pairs that `disko.nix` with a
+`persistence.nix` beside it, as `fried-egg` does: the blank snapshot is taken by
+disko at format time, an initrd unit rolls back to it before `sysroot.mount`, and
+whatever has to survive is either a dataset of its own or a bind mount out of
+`/persist`. Anything read *before* stage-2 activation has to be a real dataset —
+`/var/log` and `/var/lib/nixos` are, because a bind mount's source cannot resolve
+in the initrd, and a uid map or journal that appears too late is one that got
+regenerated from nothing.
+
 **3. Install** with `zix-bootstrap`, which is on `PATH` in the devShell and also
 runnable as `nix run .#bootstrap --`. Boot the target from a NixOS installer, then
 either drive it over ssh from here:
@@ -280,7 +289,7 @@ matters to you.
 
 ### What `zix-bootstrap` does
 
-`modules/dev/bootstrap.nix` wraps `modules/dev/bootstrap.sh`. It runs five steps
+`modules/dev/bootstrap.nix` wraps `modules/dev/bootstrap.sh`. It runs six steps
 against a host that is already declared in this flake — it never invents a host
 for you, and it never commits, pushes or touches a running system.
 
@@ -288,8 +297,9 @@ for you, and it never commits, pushes or touches a running system.
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | preflight    | resolves the repo root, checks `modules/hosts/<host>/` exists, echoes the target                                                                             |
 | hardware     | runs `nixos-facter` and writes `modules/hosts/<host>/facter.json`, then `git add -N`s it, because a file git does not know about is invisible to the flake   |
-| flake checks | evaluates the host's `toplevel` and reads `disko.devices.disk`, so a broken config fails before any disk is touched                                          |
+| flake checks | evaluates the host's `toplevel`, reads `disko.devices.disk`, its host key path and any pool key file, so a broken config fails before any disk is touched    |
 | secrets      | generates the host's ed25519 key, converts it to an age recipient with `ssh-to-age`, adds it to `.sops.yaml`, and rekeys every secret with `sops updatekeys` |
+| disk key     | asks for the pool passphrase, twice, if the host declares a `keylocation` of `file://…`                                                                      |
 | install      | prints the disks, demands confirmation, then partitions, formats and installs                                                                                |
 
 Each step is idempotent. An existing report is reused unless you pass
@@ -303,21 +313,34 @@ place rather than duplicated — anchors, aliases and comments all survive.
 | `--ssh-port <port>`      | port of the *installer's* sshd, default 22. Not the port the host ends up on                    |
 | `--host-key <file>`      | reuse an ed25519 private key as the host key instead of generating one                          |
 | `--save-host-key <dir>`  | also write the generated key to `<dir>`                                                         |
+| `--disk-key <file>`      | read the pool passphrase from `<file>` byte for byte instead of asking for it                   |
 | `--refresh-facter`       | regenerate the report even if one exists                                                        |
 | `--no-facter`            | do not generate a report                                                                        |
 | `--no-secrets`           | do not provision a host key and do not touch `.sops.yaml`                                       |
 | `--dry-run`              | print every command that would run, change nothing                                              |
 | `-y`, `--yes`            | skip the confirmation prompt                                                                    |
 
-Four things are worth knowing before the first run.
+Five things are worth knowing before the first run.
 
 **The host key is generated here, not on the target.** sops encrypts to the
 host's age recipient, which is derived from its ssh host key — so that key has to
 exist *before* the system is built, or the machine boots with secrets it cannot
 read. The script generates the keypair locally, rekeys against it, and hands the
-private half to nixos-anywhere via `--extra-files` so it lands at
-`/etc/ssh/ssh_host_ed25519_key` on the installed system. The local copy is in a
-`mktemp -d` that is removed on exit unless you asked for `--save-host-key`.
+private half to nixos-anywhere via `--extra-files`. Where it lands is read from
+the host's own `services.openssh.hostKeys`, not hardcoded, because a host with an
+ephemeral root keeps its key on a persistent dataset instead of `/etc/ssh`. The
+script warns if `sops.age.sshKeyPaths` disagrees with that path, since the two
+must match or nothing decrypts. The local copy is in a `mktemp -d` that is
+removed on exit unless you asked for `--save-host-key`.
+
+**A passphrase-encrypted pool is fed from a file, not a prompt.** disko cannot
+prompt through nixos-anywhere, so a pool that wants a passphrase declares
+`keylocation = "file:///tmp/…"` and flips itself to `prompt` in a
+`postCreateHook`. zix-bootstrap reads the path out of the host's
+`disko.devices.zpool`, asks for the passphrase twice, and puts it there — via
+`--disk-encryption-keys` remotely, or `install` locally. It writes the bytes with
+no trailing newline, because ZFS would take the newline as part of the
+passphrase and you would never be able to type it at boot.
 
 **Rekeying needs a key that can already decrypt.** `sops updatekeys` re-encrypts
 to the new recipient list, which means decrypting first. The `admin` key in
@@ -341,13 +364,16 @@ hand, the equivalent is:
 ```bash
 sudo nixos-facter -o modules/hosts/<host>/facter.json
 git add -N modules/hosts/<host>/facter.json
+printf '%s' '<passphrase>' | sudo tee /tmp/zix-disk.key >/dev/null
 sudo disko --mode destroy,format,mount --flake .#<host>
 sudo nixos-install --flake .#<host>
 ```
 
 plus generating the host key, adding it to `.sops.yaml`, running
-`sops updatekeys` on every secret, and copying the key to
-`/mnt/etc/ssh/ssh_host_ed25519_key` before `nixos-install`.
+`sops updatekeys` on every secret, and copying the key under `/mnt` to whatever
+path the host's `services.openssh.hostKeys` names, before `nixos-install`. The
+`/tmp/zix-disk.key` line applies only to a host with an encrypted pool, and the
+path is the one that host declares.
 
 ## Adding a package
 

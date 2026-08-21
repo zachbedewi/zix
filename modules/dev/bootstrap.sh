@@ -9,6 +9,7 @@ TARGET=""
 SSH_PORT=22
 HOST_KEY=""
 SAVE_HOST_KEY=""
+DISK_KEY=""
 DO_FACTER=true
 REFRESH_FACTER=false
 DO_SECRETS=true
@@ -17,6 +18,10 @@ ASSUME_YES=false
 
 KEY_DIR=""
 EXTRA_FILES=""
+DISK_KEY_DIR=""
+DISK_KEY_FILE=""
+DISK_KEY_PATHS=()
+HOST_KEY_PATH=""
 
 info() { printf '\033[1;34m•\033[0m %s\n' "$*" >&2; }
 warn() { printf '\033[1;33mwarning:\033[0m %s\n' "$*" >&2; }
@@ -39,6 +44,14 @@ cleanup() {
   fi
   if [[ -n $EXTRA_FILES && -d $EXTRA_FILES ]]; then
     rm -rf "$EXTRA_FILES"
+  fi
+  if [[ -n $DISK_KEY_DIR && -d $DISK_KEY_DIR ]]; then
+    rm -rf "$DISK_KEY_DIR"
+  fi
+  if [[ $DRY_RUN == false && $MODE == local && -n $DISK_KEY_FILE ]]; then
+    for path in "${DISK_KEY_PATHS[@]}"; do
+      sudo rm -f "$path"
+    done
   fi
 }
 trap cleanup EXIT
@@ -66,6 +79,9 @@ Options:
                           of generating one. Use it to keep a rebuilt machine's
                           existing sops identity.
   --save-host-key <dir>   also write the generated host key to <dir>.
+  --disk-key <file>       read the pool passphrase from <file>, byte for byte,
+                          instead of asking for it. Only used by a host whose
+                          pool takes its key from a file.
   --refresh-facter        regenerate the hardware report even if one exists.
   --no-facter             do not generate a hardware report.
   --no-secrets            do not provision a host key and do not touch
@@ -80,9 +96,10 @@ What it does, in order:
   2. hardware    nixos-facter report -> modules/hosts/<host>/facter.json
   3. secrets     generate the host's ed25519 key, derive its age recipient, add
                  it to .sops.yaml, rekey every secret with `sops updatekeys`
-  4. install     disko destroys, formats and mounts the disks the host declares,
-                 then the system is installed with the host key already at
-                 /etc/ssh/ssh_host_ed25519_key so secrets decrypt on first boot
+  4. disk key    ask for the pool passphrase, if the host's pool reads one
+  5. install     disko destroys, formats and mounts the disks the host declares,
+                 then the system is installed with the host key already at the
+                 path the host declares, so secrets decrypt on first boot
 
 Steps are idempotent: an existing report is reused, and an existing .sops.yaml
 entry for the host is updated in place rather than duplicated.
@@ -136,6 +153,23 @@ rekey_secrets() {
   done
 }
 
+# Written without a trailing newline: ZFS takes the file's bytes as the
+# passphrase, so a newline would become part of it and never be typed at boot.
+read_disk_key() {
+  local out=$1 first second
+
+  read -rsp "passphrase for the encrypted pool: " first
+  printf '\n' >&2
+  read -rsp "again: " second
+  printf '\n' >&2
+
+  [[ $first == "$second" ]] || die "the passphrases do not match"
+  ((${#first} >= 8)) || die "ZFS needs a passphrase of at least 8 characters"
+
+  printf '%s' "$first" >"$out"
+  chmod 600 "$out"
+}
+
 generate_report_remote() {
   local out=$1
   ssh -p "$SSH_PORT" "$TARGET" \
@@ -168,6 +202,10 @@ while [[ $# -gt 0 ]]; do
     ;;
   --save-host-key)
     SAVE_HOST_KEY=${2:?--save-host-key needs a directory}
+    shift 2
+    ;;
+  --disk-key)
+    DISK_KEY=${2:?--disk-key needs a file}
     shift 2
     ;;
   --refresh-facter)
@@ -288,6 +326,41 @@ while IFS= read -r line; do
   info "    $line"
 done <<<"$DISKS"
 
+# The host decides where its key lives: an ephemeral-root host keeps it on a
+# persistent dataset, so this cannot be hardcoded to /etc/ssh.
+HOST_KEY_PATH=$(nix eval --raw ".#nixosConfigurations.$HOST.config.services.openssh.hostKeys" \
+  --apply 'keys:
+    let ed = builtins.filter (k: k.type == "ed25519") keys;
+    in if ed == [ ] then "" else (builtins.head ed).path' 2>/dev/null) || HOST_KEY_PATH=""
+
+if [[ -z $HOST_KEY_PATH ]]; then
+  HOST_KEY_PATH=/etc/ssh/ssh_host_ed25519_key
+  warn "host '$HOST' declares no ed25519 host key; assuming $HOST_KEY_PATH"
+fi
+info "host key: $HOST_KEY_PATH"
+
+if ! nix eval --json ".#nixosConfigurations.$HOST.config.sops.age.sshKeyPaths" |
+  jq -e --arg path "$HOST_KEY_PATH" 'index($path)' >/dev/null; then
+  warn "sops.age.sshKeyPaths does not include $HOST_KEY_PATH; no secret will decrypt"
+fi
+
+# A pool whose keylocation is a file needs that file present before disko runs.
+if KEYLOCATIONS=$(nix eval --json ".#nixosConfigurations.$HOST.config.disko.devices.zpool" \
+  --apply 'pools:
+    builtins.concatMap (
+      pool:
+      let location = pool.rootFsOptions.keylocation or "";
+      in
+      if builtins.substring 0 7 location == "file://" then
+        [ (builtins.substring 7 (builtins.stringLength location) location) ]
+      else
+        [ ]
+    ) (builtins.attrValues pools)' 2>/dev/null); then
+  while IFS= read -r path; do
+    [[ -n $path ]] && DISK_KEY_PATHS+=("$path")
+  done < <(jq -r '.[]' <<<"$KEYLOCATIONS")
+fi
+
 step "Secrets"
 
 if [[ $DO_SECRETS == false ]]; then
@@ -314,13 +387,41 @@ else
   rekey_secrets
 
   EXTRA_FILES=$(mktemp -d)
-  install -Dm600 "$KEY" "$EXTRA_FILES/etc/ssh/ssh_host_ed25519_key"
-  install -Dm644 "$KEY.pub" "$EXTRA_FILES/etc/ssh/ssh_host_ed25519_key.pub"
+  install -Dm600 "$KEY" "$EXTRA_FILES$HOST_KEY_PATH"
+  install -Dm644 "$KEY.pub" "$EXTRA_FILES$HOST_KEY_PATH.pub"
 
   if [[ -n $SAVE_HOST_KEY ]]; then
     install -Dm600 "$KEY" "$SAVE_HOST_KEY/ssh_host_ed25519_key"
     install -Dm644 "$KEY.pub" "$SAVE_HOST_KEY/ssh_host_ed25519_key.pub"
     warn "the private host key is now at $SAVE_HOST_KEY; it decrypts every secret this host can read"
+  fi
+fi
+
+step "Disk key"
+
+if [[ ${#DISK_KEY_PATHS[@]} -eq 0 ]]; then
+  if [[ -n $DISK_KEY ]]; then
+    warn "--disk-key given, but no pool of '$HOST' reads its key from a file; ignoring it"
+  fi
+  info "no pool needs a key file"
+else
+  info "pools read their key from: ${DISK_KEY_PATHS[*]}"
+
+  if [[ $DRY_RUN == true ]]; then
+    DISK_KEY_FILE="PASSPHRASE_FILE"
+    info "would ask for the passphrase and put it there"
+  else
+    DISK_KEY_DIR=$(mktemp -d)
+    chmod 700 "$DISK_KEY_DIR"
+    DISK_KEY_FILE="$DISK_KEY_DIR/key"
+
+    if [[ -n $DISK_KEY ]]; then
+      [[ -r $DISK_KEY ]] || die "cannot read --disk-key $DISK_KEY"
+      install -m600 "$DISK_KEY" "$DISK_KEY_FILE"
+      info "using the passphrase in $DISK_KEY verbatim, trailing newline included"
+    else
+      read_disk_key "$DISK_KEY_FILE"
+    fi
   fi
 fi
 
@@ -342,12 +443,18 @@ if [[ $MODE == remote ]]; then
   if [[ -n $EXTRA_FILES ]]; then
     args+=(--extra-files "$EXTRA_FILES")
   fi
+  for path in "${DISK_KEY_PATHS[@]}"; do
+    args+=(--disk-encryption-keys "$path" "$DISK_KEY_FILE")
+  done
   run nixos-anywhere "${args[@]}"
 else
+  for path in "${DISK_KEY_PATHS[@]}"; do
+    run sudo install -Dm600 "$DISK_KEY_FILE" "$path"
+  done
   run sudo "$(command -v disko)" --mode destroy,format,mount --flake ".#$HOST"
   if [[ -n $EXTRA_FILES ]]; then
-    run sudo install -Dm600 "$EXTRA_FILES/etc/ssh/ssh_host_ed25519_key" /mnt/etc/ssh/ssh_host_ed25519_key
-    run sudo install -Dm644 "$EXTRA_FILES/etc/ssh/ssh_host_ed25519_key.pub" /mnt/etc/ssh/ssh_host_ed25519_key.pub
+    run sudo install -Dm600 "$EXTRA_FILES$HOST_KEY_PATH" "/mnt$HOST_KEY_PATH"
+    run sudo install -Dm644 "$EXTRA_FILES$HOST_KEY_PATH.pub" "/mnt$HOST_KEY_PATH.pub"
   fi
   run sudo "$(command -v nixos-install)" --flake ".#$HOST" --no-root-passwd
 fi
