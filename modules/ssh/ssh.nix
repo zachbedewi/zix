@@ -9,9 +9,8 @@
         enable = true;
         ports = [ 30 ];
         settings = {
-          PasswordAuthentication = false;
-          PermitRootLogin = "no";
-          StreamLocalBindUnlink = "yes";
+          PasswordAuthentication = true;
+          PermitRootLogin = "yes";
         };
 
         hostKeys = mkDefault [
