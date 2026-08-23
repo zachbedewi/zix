@@ -1,6 +1,7 @@
 keys:
   - &admin age1nn6js48rl3wtn078kdm5ydve48gx2ntz3kynflvyu3yfv90t23xs6eecg0
   - &cocoon age12nz0tyng5l79x4jj3lslwfdcs4y66dx5y7wqs4w03faq5zh6myxq4refjd
+  - &eye-of-god age1fw7jg05nhsfccvptknvfltay4ln5hnevlsyq74yzjh3p42hhm9fqhe9vum
   - &fried-egg age1vjjluypq4zl93mlr5qx3znya604dljyjcmlryajryrzxntd5zsrsae2l29
 creation_rules:
   # Per-user secrets. Recipients are the host keys of the machines that user
@@ -11,10 +12,12 @@ creation_rules:
       - age:
           - *admin
           - *cocoon
+          - *eye-of-god
           - *fried-egg
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
       - age:
           - *admin
           - *cocoon
+          - *eye-of-god
           - *fried-egg

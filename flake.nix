@@ -54,6 +54,10 @@
       url = "github:rebelot/kanagawa.nvim";
       flake = false;
     };
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-darwin = {
       url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
