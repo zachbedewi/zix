@@ -120,17 +120,3 @@
 (after! lsp-mode
   (add-to-list 'lsp-disabled-clients 'nix-nil)
   (setq lsp-nix-nixd-server-path "nixd"))
-
-;; --- Typst ---
-(use-package! typst-ts-mode
-  :mode "\\.typ\\'"
-  :config
-  (setq typst-ts-mode-watch-options "--open")
-  (with-eval-after-load 'lsp-mode
-    (add-to-list 'lsp-language-id-configuration '(typst-ts-mode . "typst"))
-    (lsp-register-client
-     (make-lsp-client
-      :new-connection (lsp-stdio-connection "tinymist")
-      :major-modes '(typst-ts-mode)
-      :server-id 'tinymist)))
-  (add-hook 'typst-ts-mode-hook #'lsp))
