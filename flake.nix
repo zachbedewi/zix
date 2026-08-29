@@ -49,6 +49,14 @@
       url = "github:d12frosted/homebrew-emacs-plus";
       flake = false;
     };
+    hyprland = {
+      url = "github:hyprwm/hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     import-tree.url = "github:vic/import-tree";
     kanagawa = {
       url = "github:rebelot/kanagawa.nvim";
@@ -74,6 +82,10 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nur.url = "github:nix-community/NUR";
+    quickshell = {
+      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     sops = {
       url = "github:mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -105,10 +105,10 @@
 ;; --- Format ---
 (setq +format-on-save-enabled-modes
       '(not emacs-lisp-mode
-            sql-mode
-            tex-mode
-            latex-mode
-            org-msg-edit-mode))
+        sql-mode
+        tex-mode
+        latex-mode
+        org-msg-edit-mode))
 
 ;; --- Completion ---
 (after! corfu
@@ -120,3 +120,17 @@
 (after! lsp-mode
   (add-to-list 'lsp-disabled-clients 'nix-nil)
   (setq lsp-nix-nixd-server-path "nixd"))
+
+(after! lsp-mode
+  (add-to-list 'lsp-language-id-configuration '(qml-ts-mode . "qml-ts"))
+
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-stdio-connection '("qmlls" "-E"))
+    :activation-fn (lsp-activate-on "qml-ts")
+    :server-id 'qmlls))
+
+  (add-hook 'qml-ts-mode-hook
+            (lambda ()
+              (setq-local electric-indent-chars '(?\n ?\( ?\) ?{ ?} ?\[ ?\] ?\; ?,))
+              (lsp-deferred))))

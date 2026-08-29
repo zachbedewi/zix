@@ -1,7 +1,7 @@
 {
   flake.modules.homeManager.git = {
     zix.shellAliases = {
-      gl = "git lg";
+      gl = "git log";
       gs = "git status";
 
       ga = "git add";
@@ -19,6 +19,7 @@
 
       settings = {
         user.name = "Zach Bedewi";
+        user.email = "zachary.bedewi@protonmail.com";
 
         init.defaultBranch = "mainline";
         push.autoSetupRemote = true;

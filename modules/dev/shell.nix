@@ -20,37 +20,44 @@
       };
 
       config.devShells.default = pkgs.mkShell {
-        shellHook = config.pre-commit.shellHook + config.zix.dev.extraShellHook;
+        inputsFrom = [ config.treefmt.build.devShell ];
+
+        shellHook =
+          config.pre-commit.shellHook
+          + config.zix.dev.extraShellHook
+          + ''
+            export QMLLS_BUILD_DIRS=${pkgs.qt6.qtdeclarative}/lib/qt-6/qml/
+          '';
 
         packages =
           with pkgs;
           [
-            config.formatter
-
-            nixd
-
+            # Language Servers
+            # keep-sorted start block=yes newline_separated=no
             bash-language-server
-            shellcheck
-            shfmt
-
             lua-language-server
-            stylua
-
             marksman
-
+            nixd
+            qt6.qtdeclarative
             taplo
-            vscode-langservers-extracted
+            vscode-json-languageserver
             yaml-language-server
+            # keep-sorted end
 
-            nh
-
+            # Tools
+            # keep-sorted start block=yes newline_separated=no
             age
+            nh
+            quickshell
+            shellcheck
             sops
+            ssh-to-age
+            wayland
+            # keep-sorted end
           ]
+          ++ [ config.formatter ]
           ++ config.zix.dev.extraPackages
           ++ config.pre-commit.settings.enabledPackages;
-
-        inputsFrom = [ config.treefmt.build.devShell ];
       };
     };
 }

@@ -16,6 +16,7 @@ in
 
         disko
         facter
+        impermanence
       ];
 
       system.stateVersion = "25.05";

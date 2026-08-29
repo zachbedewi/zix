@@ -13,7 +13,7 @@
         home-manager
         sops
 
-        desktops
+        greetd
       ];
     };
 
@@ -37,7 +37,7 @@
         home-directory
 
         xdg
-        secrets
+        sops
 
         shell-aliases
         zsh

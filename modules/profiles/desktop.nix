@@ -21,6 +21,7 @@
     homeManager.desktop = {
       imports = with self.modules.homeManager; [
         base
+        fonts
 
         kitty
         emacs
@@ -28,6 +29,7 @@
         aerospace
         sketchybar
         jankyborders
+        keepass
       ];
     };
   };

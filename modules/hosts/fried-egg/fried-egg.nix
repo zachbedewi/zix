@@ -5,7 +5,6 @@
       systemd-boot
       chrony
       zfs
-      zram
       desktop
     ];
   };

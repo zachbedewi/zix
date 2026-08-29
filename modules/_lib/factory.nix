@@ -3,19 +3,17 @@ modules: {
     username:
     {
       admin ? false,
-      desktop ? null,
+      sshPublicKey ? null,
     }:
     {
       nixos.${username} = { lib, pkgs, ... }: {
         users.users.${username} = {
           isNormalUser = true;
           home = "/home/${username}";
-          extraGroups = lib.optionals admin [ "wheel" ];
+          extraGroups = lib.optionals admin [ "wheel" ] ++ lib.optionals (sshPublicKey != null) [ "sshusers" ];
           shell = pkgs.zsh;
         };
         programs.zsh.enable = true;
-
-        zix.desktops = lib.optional (desktop != null) desktop;
 
         home-manager.users.${username} = {
           imports = [ modules.homeManager.${username} ];
@@ -36,10 +34,10 @@ modules: {
         system.primaryUser = lib.mkIf admin username;
       };
 
-      homeManager.${username} = { lib, ... }: {
-        imports = lib.optional (desktop != null) modules.homeManager.${desktop};
-
+      homeManager.${username} = {
         home.username = username;
+        imports = [ modules.homeManager.ssh ];
+        zix.ssh.publicKey = sshPublicKey;
       };
     };
 }
