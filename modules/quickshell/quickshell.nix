@@ -40,7 +40,7 @@
           After = [ config.wayland.systemd.target ];
         };
         Service = {
-          ExecStart = if cfg.devMode then "${lib.getExe pkg} -p ${config.home.homeDirectory}/${cfg.devPath}" else lib.getExe pkg;
+          ExecStart = "${pkg}/bin/deadfall-qs -p ${if cfg.devMode then "${config.home.homeDirectory}/${cfg.devPath}" else "${pkg}/share/deadfall"}";
           Restart = "on-failure";
           RestartSec = 2;
         };

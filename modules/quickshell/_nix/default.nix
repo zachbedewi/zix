@@ -79,6 +79,14 @@ stdenv.mkDerivation {
   postInstall = ''
     makeWrapper ${qs}/bin/qs $out/bin/deadfall \
       --add-flags "-p $out/share/deadfall"
+
+    # `deadfall` above always adds "-p $out/share/deadfall" via --add-flags,
+    # which makeWrapper can only ever prepend, never override — so a caller
+    # that needs to pass its own -p (e.g. devMode) can't use it without
+    # ending up with two -p flags, which qs rejects outright. This is the
+    # same Qt/QML-wrapped qs with no baked-in flags, for callers that always
+    # supply their own -p.
+    makeWrapper ${qs}/bin/qs $out/bin/deadfall-qs
   '';
 
   passthru = { inherit plugin qs; };
