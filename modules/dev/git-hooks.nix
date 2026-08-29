@@ -23,7 +23,10 @@
             "\.el$"
             "\facter.json$"
           ];
-          settings.ignored-words = [ "facter" ];
+          settings.ignored-words = [
+            "facter"
+            "invokable"
+          ];
         };
         # keep-sorted end
       };

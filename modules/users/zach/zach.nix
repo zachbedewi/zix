@@ -28,11 +28,14 @@
 
           # Modules
           hyprland
+          deadfall
           firefox
 
           gh
         ];
         home.packages = with pkgs; [ claude-code ];
+
+        zix.deadfall.devMode = true;
       };
     }
   ];

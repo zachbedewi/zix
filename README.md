@@ -224,6 +224,45 @@ the user profile would shadow the wrapper on `PATH`. Two consequences —
 there is no reload-on-switch hook, so applying an edit is `nixos-rebuild switch`
 followed by `hyprctl reload`.
 
+## Deadfall
+
+Deadfall is the [Quickshell](https://quickshell.org)-based desktop shell,
+packaged as a real CMake project rather than plain QML:
+`modules/quickshell/plugin/` is a C++ QML plugin (`qt_add_qml_module`,
+`Deadfall.Services`), built and installed as a **separate derivation** from
+the QML tree in `modules/quickshell/modules/`, so editing QML never triggers
+a C++ rebuild and vice versa. `packages.deadfall`
+(`modules/quickshell/_nix/default.nix`) wraps the built `qs` binary as
+`deadfall`; `zix.deadfall` (`modules/quickshell/options.nix`) exposes
+`devMode`/`devPath` on the `homeManager.deadfall` module, which installs the
+package and a `systemd.user.services.deadfall` unit.
+
+The package derivation is a plain `callPackage`-style file, not a
+flake-parts module, so it lives under `modules/quickshell/_nix/` — a path
+containing `/_` is exactly what import-tree skips, the same reason
+`modules/_lib/` exists.
+
+### Dev loop
+
+```bash
+just deadfall-build   # configure + ninja-build the C++ plugin
+just deadfall-run     # qs -p modules/quickshell against the freshly-built plugin
+```
+
+- Editing QML (`modules/quickshell/{shell.qml,modules/**}`): just save —
+  Quickshell hot-reloads a running `qs -p ...` automatically.
+- Editing the plugin (`modules/quickshell/plugin/**`): kill and re-run
+  `just deadfall-run`; `ninja` only rebuilds the changed translation unit,
+  so this is seconds, not a full Nix rebuild.
+- `zix.deadfall.devMode = true` points the live `systemd --user` service at
+  the working tree too (`-p ~/dev/zix/modules/quickshell`), so QML edits
+  reach it the same way as the manual loop. Plugin edits do not, until you
+  rebuild the package and re-switch (`nix build .#deadfall`, `just switch`)
+  — iterate against `deadfall-run` first, push to the live service once
+  it's working.
+- Before calling a change done, confirm it survives packaging, not just the
+  working tree: `nix build .#deadfall && result/bin/deadfall`.
+
 ## Bootstrapping a host
 
 Disks are declared with [disko](https://github.com/nix-community/disko) and

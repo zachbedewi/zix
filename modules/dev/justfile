@@ -113,3 +113,24 @@ secrets file="secrets/main.yaml":
 # install a host; see "Bootstrapping a host" in the README
 bootstrap *args:
     zix-bootstrap {{ args }}
+
+# configure the deadfall CMake build
+deadfall-configure:
+    cmake -B modules/quickshell/build -S modules/quickshell -G Ninja -DQT_QML_GENERATE_QMLLS_INI=ON
+
+# build the deadfall plugin
+deadfall-build: deadfall-configure
+    cmake --build modules/quickshell/build
+    ln -sf build/compile_commands.json modules/quickshell/compile_commands.json
+
+# run deadfall against the working tree with the freshly built plugin
+deadfall-run: deadfall-build
+    QML2_IMPORT_PATH="modules/quickshell/build/qml:$QUICKSHELL_QML_PATH" qs -p modules/quickshell
+
+# stop the live deadfall service, run against the working tree, restart it on exit
+deadfall-dev: deadfall-build
+    #!/usr/bin/env bash
+    set -euo pipefail
+    systemctl --user stop deadfall 2>/dev/null || true
+    trap 'systemctl --user start deadfall 2>/dev/null || true' EXIT
+    QML2_IMPORT_PATH="modules/quickshell/build/qml:$QUICKSHELL_QML_PATH" qs -p modules/quickshell

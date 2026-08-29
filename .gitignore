@@ -4,3 +4,7 @@ docs
 /justfile
 .direnv/
 result
+
+modules/quickshell/build/
+modules/quickshell/compile_commands.json
+**/.qmlls.ini

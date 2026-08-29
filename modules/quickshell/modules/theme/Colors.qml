@@ -11,7 +11,7 @@ Singleton {
 
     property color background: "#1e1e2e"
     property color surface: "#313244"
-    property color onSurface: "#cdd6f4"
+    property color surfaceText: "#cdd6f4"
     property color subtext: "#a6adc8"
     property color accent: "#89b4fa"
     property color error: "#f38ba8"
@@ -31,7 +31,7 @@ Singleton {
     //                 root.surface = c.surface;
     //             }
     //             if (c.onSurface) {
-    //                 root.onSurface = c.onSurface;
+    //                 root.surfaceText = c.onSurface;
     //             }
     //             if (c.subtext) {
     //                 root.subtext = c.subtext;
