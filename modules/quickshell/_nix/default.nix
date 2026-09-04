@@ -7,6 +7,10 @@
   makeWrapper,
   qt6,
   quickshell,
+  # Config path baked into the wrapper via `qs -p`. Defaults to this
+  # derivation's own installed share dir; override (e.g. from the deadfall
+  # home-manager module) to point the wrapper at a working tree instead.
+  execPath ? null,
 }:
 let
   version = "0.1.0";
@@ -78,15 +82,7 @@ stdenv.mkDerivation {
 
   postInstall = ''
     makeWrapper ${qs}/bin/qs $out/bin/deadfall \
-      --add-flags "-p $out/share/deadfall"
-
-    # `deadfall` above always adds "-p $out/share/deadfall" via --add-flags,
-    # which makeWrapper can only ever prepend, never override — so a caller
-    # that needs to pass its own -p (e.g. devMode) can't use it without
-    # ending up with two -p flags, which qs rejects outright. This is the
-    # same Qt/QML-wrapped qs with no baked-in flags, for callers that always
-    # supply their own -p.
-    makeWrapper ${qs}/bin/qs $out/bin/deadfall-qs
+      --add-flags "-p ${if execPath == null then "$out/share/deadfall" else execPath}"
   '';
 
   passthru = { inherit plugin qs; };

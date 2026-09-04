@@ -3,20 +3,15 @@
 
 import QtQml
 import Quickshell
-import Deadfall.Services
 
 import qs.modules.bar
+import qs.modules.launcher
+import qs.modules.shell
 
 ShellRoot {
     id: root
 
-    Component.onCompleted: {
-        SystemMonitor.watch();
-        SystemMonitor.sampled.connect(() => {
-            console.log(`SystemMonitor: cpu=${SystemMonitor.cpuUsage.toFixed(1)}% mem=${SystemMonitor.memUsage.toFixed(1)}%`);
-            SystemMonitor.unwatch();
-        });
-    }
+    LauncherIpc {}
 
     Variants {
         model: Quickshell.screens
@@ -24,6 +19,15 @@ ShellRoot {
         Bar {
             required property ShellScreen modelData
             screen: modelData
+        }
+    }
+
+    Variants {
+        model: Quickshell.screens
+
+        UnifiedShellPanel {
+            required property ShellScreen modelData
+            hostScreen: modelData
         }
     }
 }

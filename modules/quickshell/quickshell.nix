@@ -28,9 +28,16 @@
     }:
     let
       cfg = config.zix.deadfall;
-      pkg = self.packages.${pkgs.system}.deadfall;
+      basePkg = self.packages.${pkgs.system}.deadfall;
+      # Same `deadfall` binary as the standalone package, just wrapped with
+      # this user's execPath baked in instead of the store default — see
+      # execPath's description for why that has to happen here rather than
+      # in the flake package itself.
+      pkg = basePkg.override { inherit (cfg) execPath; };
     in
     lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+      zix.deadfall.execPath = if cfg.devMode then "${config.home.homeDirectory}/${cfg.devPath}" else "${basePkg}/share/deadfall";
+
       home.packages = [ pkg ];
 
       systemd.user.services.deadfall = {
@@ -40,7 +47,7 @@
           After = [ config.wayland.systemd.target ];
         };
         Service = {
-          ExecStart = "${pkg}/bin/deadfall-qs -p ${if cfg.devMode then "${config.home.homeDirectory}/${cfg.devPath}" else "${pkg}/share/deadfall"}";
+          ExecStart = "${pkg}/bin/deadfall";
           Restart = "on-failure";
           RestartSec = 2;
         };
