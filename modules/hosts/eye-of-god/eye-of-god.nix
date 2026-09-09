@@ -7,6 +7,7 @@
       zfs
 
       chrony
+      plocate
       desktop
     ];
 

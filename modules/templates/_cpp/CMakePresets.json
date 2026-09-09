@@ -1,0 +1,75 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 29,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "conf-common",
+      "description": "General settings that apply to all configurations",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}"
+    },
+    {
+      "name": "dev",
+      "displayName": "Dev (Debug, sanitizers + static analysis on)",
+      "description": "Debug build with sanitizers, clang-tidy and cppcheck enabled",
+      "inherits": "conf-common",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "release",
+      "displayName": "Release",
+      "description": "Optimized build with hardening and IPO/LTO enabled, static analysis off",
+      "inherits": "conf-common",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "myproject_ENABLE_CLANG_TIDY": "OFF",
+        "myproject_ENABLE_CPPCHECK": "OFF",
+        "myproject_ENABLE_SANITIZER_ADDRESS": "OFF",
+        "myproject_ENABLE_SANITIZER_UNDEFINED": "OFF"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "dev",
+      "configurePreset": "dev"
+    },
+    {
+      "name": "release",
+      "configurePreset": "release"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "test-common",
+      "description": "Test CMake settings that apply to all configurations",
+      "hidden": true,
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "noTestsAction": "error",
+        "stopOnFailure": true
+      }
+    },
+    {
+      "name": "dev",
+      "displayName": "Dev",
+      "inherits": "test-common",
+      "configurePreset": "dev"
+    },
+    {
+      "name": "release",
+      "displayName": "Release",
+      "inherits": "test-common",
+      "configurePreset": "release"
+    }
+  ]
+}

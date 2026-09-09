@@ -1,0 +1,22 @@
+# Build directories
+build/
+cmake-build-*/
+
+# User-specific CMake settings
+CMakeUserPresets.json
+
+# IDE files
+.vs/
+.idea/
+.vscode/
+*.bak
+*.swp
+*~
+
+# OS-generated files
+.DS_Store
+
+# Nix
+.direnv/
+result
+result-*

@@ -28,6 +28,8 @@ modules: {
     };
   };
 
+  mkTemplate = name: { description, path }: { ${name} = { inherit description path; }; };
+
   mkHomeManager = system: name: {
     ${name} = inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = inputs.nixpkgs.legacyPackages.${system};

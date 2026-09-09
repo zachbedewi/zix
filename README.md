@@ -263,6 +263,23 @@ just deadfall-run     # qs -p modules/quickshell against the freshly-built plugi
 - Before calling a change done, confirm it survives packaging, not just the
   working tree: `nix build .#deadfall && result/bin/deadfall`.
 
+### Launcher
+
+`modules/quickshell/modules/launcher/LauncherController.qml` is a singleton
+that fans a query out to every provider in its `providers` array
+(`modules/quickshell/modules/launcher/providers/*.qml`, plain `QtObject`s).
+Each provider exposes `readonly property string prefix` and
+`function query(text)`. An empty `prefix` means always-on — the provider runs
+on every keystroke (apps, calculator, power actions, web search). A non-empty
+`prefix` (`"clip "`, `"/"`, `"ssh "`, `":"`, `">"`) gates the provider: it only
+runs once the trimmed query starts with that prefix, and only that provider
+runs, so niche results never clutter an everyday search. `query()` returns
+result objects — `{ id, title, subtitle, icon, activate, requiresConfirm?, confirmLabel? }` — best match first; the controller blends that ordering with
+`FrecencyStore`'s usage-based score before ranking. A result with
+`requiresConfirm: true` (destructive power actions) is intercepted by
+`activateSelected()`: the first Enter swaps in a synthetic confirmation
+result instead of calling `activate()`, and only a second Enter runs it.
+
 ## Bootstrapping a host
 
 Disks are declared with [disko](https://github.com/nix-community/disko) and

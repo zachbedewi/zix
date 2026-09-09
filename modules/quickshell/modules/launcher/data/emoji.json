@@ -1,0 +1,732 @@
+[
+  {
+    "glyph": "😀",
+    "name": "grinning face",
+    "shortcode": "grinning"
+  },
+  {
+    "glyph": "😃",
+    "name": "grinning face with big eyes",
+    "shortcode": "smiley"
+  },
+  {
+    "glyph": "😄",
+    "name": "grinning face with smiling eyes",
+    "shortcode": "smile"
+  },
+  {
+    "glyph": "😁",
+    "name": "beaming face with smiling eyes",
+    "shortcode": "grin"
+  },
+  {
+    "glyph": "😆",
+    "name": "grinning squinting face",
+    "shortcode": "laughing"
+  },
+  {
+    "glyph": "😅",
+    "name": "grinning face with sweat",
+    "shortcode": "sweat_smile"
+  },
+  {
+    "glyph": "🤣",
+    "name": "rolling on the floor laughing",
+    "shortcode": "rofl"
+  },
+  {
+    "glyph": "😂",
+    "name": "face with tears of joy",
+    "shortcode": "joy"
+  },
+  {
+    "glyph": "🙂",
+    "name": "slightly smiling face",
+    "shortcode": "slightly_smiling_face"
+  },
+  {
+    "glyph": "🙃",
+    "name": "upside-down face",
+    "shortcode": "upside_down"
+  },
+  {
+    "glyph": "😉",
+    "name": "winking face",
+    "shortcode": "wink"
+  },
+  {
+    "glyph": "😊",
+    "name": "smiling face with smiling eyes",
+    "shortcode": "blush"
+  },
+  {
+    "glyph": "🥰",
+    "name": "smiling face with hearts",
+    "shortcode": "smiling_face_with_3_hearts"
+  },
+  {
+    "glyph": "😍",
+    "name": "smiling face with heart-eyes",
+    "shortcode": "heart_eyes"
+  },
+  {
+    "glyph": "😘",
+    "name": "face blowing a kiss",
+    "shortcode": "kissing_heart"
+  },
+  {
+    "glyph": "😋",
+    "name": "face savoring food",
+    "shortcode": "yum"
+  },
+  {
+    "glyph": "😛",
+    "name": "face with tongue",
+    "shortcode": "stuck_out_tongue"
+  },
+  {
+    "glyph": "🤗",
+    "name": "hugging face",
+    "shortcode": "hugs"
+  },
+  {
+    "glyph": "🤔",
+    "name": "thinking face",
+    "shortcode": "thinking"
+  },
+  {
+    "glyph": "😐",
+    "name": "neutral face",
+    "shortcode": "neutral_face"
+  },
+  {
+    "glyph": "😏",
+    "name": "smirking face",
+    "shortcode": "smirk"
+  },
+  {
+    "glyph": "🙄",
+    "name": "face with rolling eyes",
+    "shortcode": "roll_eyes"
+  },
+  {
+    "glyph": "😬",
+    "name": "grimacing face",
+    "shortcode": "grimacing"
+  },
+  {
+    "glyph": "😴",
+    "name": "sleeping face",
+    "shortcode": "sleeping"
+  },
+  {
+    "glyph": "😷",
+    "name": "face with medical mask",
+    "shortcode": "mask"
+  },
+  {
+    "glyph": "🤯",
+    "name": "exploding head",
+    "shortcode": "exploding_head"
+  },
+  {
+    "glyph": "🥳",
+    "name": "partying face",
+    "shortcode": "partying_face"
+  },
+  {
+    "glyph": "😎",
+    "name": "smiling face with sunglasses",
+    "shortcode": "sunglasses"
+  },
+  {
+    "glyph": "🤓",
+    "name": "nerd face",
+    "shortcode": "nerd_face"
+  },
+  {
+    "glyph": "😕",
+    "name": "confused face",
+    "shortcode": "confused"
+  },
+  {
+    "glyph": "🥺",
+    "name": "pleading face",
+    "shortcode": "pleading_face"
+  },
+  {
+    "glyph": "😢",
+    "name": "crying face",
+    "shortcode": "cry"
+  },
+  {
+    "glyph": "😭",
+    "name": "loudly crying face",
+    "shortcode": "sob"
+  },
+  {
+    "glyph": "😱",
+    "name": "face screaming in fear",
+    "shortcode": "scream"
+  },
+  {
+    "glyph": "😞",
+    "name": "disappointed face",
+    "shortcode": "disappointed"
+  },
+  {
+    "glyph": "😩",
+    "name": "weary face",
+    "shortcode": "weary"
+  },
+  {
+    "glyph": "😡",
+    "name": "pouting face",
+    "shortcode": "rage"
+  },
+  {
+    "glyph": "😠",
+    "name": "angry face",
+    "shortcode": "angry"
+  },
+  {
+    "glyph": "💀",
+    "name": "skull",
+    "shortcode": "skull"
+  },
+  {
+    "glyph": "💩",
+    "name": "pile of poo",
+    "shortcode": "poop"
+  },
+  {
+    "glyph": "🤡",
+    "name": "clown face",
+    "shortcode": "clown_face"
+  },
+  {
+    "glyph": "👻",
+    "name": "ghost",
+    "shortcode": "ghost"
+  },
+  {
+    "glyph": "👽",
+    "name": "alien",
+    "shortcode": "alien"
+  },
+  {
+    "glyph": "🤖",
+    "name": "robot",
+    "shortcode": "robot"
+  },
+  {
+    "glyph": "😳",
+    "name": "flushed face",
+    "shortcode": "flushed"
+  },
+  {
+    "glyph": "😲",
+    "name": "astonished face",
+    "shortcode": "astonished"
+  },
+  {
+    "glyph": "👋",
+    "name": "waving hand",
+    "shortcode": "wave"
+  },
+  {
+    "glyph": "✋",
+    "name": "raised hand",
+    "shortcode": "raised_hand"
+  },
+  {
+    "glyph": "👌",
+    "name": "OK hand",
+    "shortcode": "ok_hand"
+  },
+  {
+    "glyph": "✌️",
+    "name": "victory hand",
+    "shortcode": "victory_hand"
+  },
+  {
+    "glyph": "🤞",
+    "name": "crossed fingers",
+    "shortcode": "crossed_fingers"
+  },
+  {
+    "glyph": "🤟",
+    "name": "love-you gesture",
+    "shortcode": "love_you_gesture"
+  },
+  {
+    "glyph": "🤘",
+    "name": "sign of the horns",
+    "shortcode": "metal"
+  },
+  {
+    "glyph": "🤙",
+    "name": "call me hand",
+    "shortcode": "call_me_hand"
+  },
+  {
+    "glyph": "👈",
+    "name": "backhand index pointing left",
+    "shortcode": "point_left"
+  },
+  {
+    "glyph": "👉",
+    "name": "backhand index pointing right",
+    "shortcode": "point_right"
+  },
+  {
+    "glyph": "👍",
+    "name": "thumbs up",
+    "shortcode": "thumbsup"
+  },
+  {
+    "glyph": "👎",
+    "name": "thumbs down",
+    "shortcode": "thumbsdown"
+  },
+  {
+    "glyph": "✊",
+    "name": "raised fist",
+    "shortcode": "fist"
+  },
+  {
+    "glyph": "👏",
+    "name": "clapping hands",
+    "shortcode": "clap"
+  },
+  {
+    "glyph": "🙌",
+    "name": "raising hands",
+    "shortcode": "raised_hands"
+  },
+  {
+    "glyph": "🙏",
+    "name": "folded hands",
+    "shortcode": "pray"
+  },
+  {
+    "glyph": "🤝",
+    "name": "handshake",
+    "shortcode": "handshake"
+  },
+  {
+    "glyph": "💪",
+    "name": "flexed biceps",
+    "shortcode": "muscle"
+  },
+  {
+    "glyph": "❤️",
+    "name": "red heart",
+    "shortcode": "heart"
+  },
+  {
+    "glyph": "🧡",
+    "name": "orange heart",
+    "shortcode": "orange_heart"
+  },
+  {
+    "glyph": "💛",
+    "name": "yellow heart",
+    "shortcode": "yellow_heart"
+  },
+  {
+    "glyph": "💚",
+    "name": "green heart",
+    "shortcode": "green_heart"
+  },
+  {
+    "glyph": "💙",
+    "name": "blue heart",
+    "shortcode": "blue_heart"
+  },
+  {
+    "glyph": "💜",
+    "name": "purple heart",
+    "shortcode": "purple_heart"
+  },
+  {
+    "glyph": "🖤",
+    "name": "black heart",
+    "shortcode": "black_heart"
+  },
+  {
+    "glyph": "💔",
+    "name": "broken heart",
+    "shortcode": "broken_heart"
+  },
+  {
+    "glyph": "💕",
+    "name": "two hearts",
+    "shortcode": "two_hearts"
+  },
+  {
+    "glyph": "💓",
+    "name": "beating heart",
+    "shortcode": "heartbeat"
+  },
+  {
+    "glyph": "💗",
+    "name": "growing heart",
+    "shortcode": "heartpulse"
+  },
+  {
+    "glyph": "💖",
+    "name": "sparkling heart",
+    "shortcode": "sparkling_heart"
+  },
+  {
+    "glyph": "🐶",
+    "name": "dog face",
+    "shortcode": "dog"
+  },
+  {
+    "glyph": "🐱",
+    "name": "cat face",
+    "shortcode": "cat"
+  },
+  {
+    "glyph": "🐭",
+    "name": "mouse face",
+    "shortcode": "mouse"
+  },
+  {
+    "glyph": "🐹",
+    "name": "hamster",
+    "shortcode": "hamster"
+  },
+  {
+    "glyph": "🐰",
+    "name": "rabbit face",
+    "shortcode": "rabbit"
+  },
+  {
+    "glyph": "🦊",
+    "name": "fox face",
+    "shortcode": "fox_face"
+  },
+  {
+    "glyph": "🐻",
+    "name": "bear face",
+    "shortcode": "bear"
+  },
+  {
+    "glyph": "🐼",
+    "name": "panda face",
+    "shortcode": "panda_face"
+  },
+  {
+    "glyph": "🐨",
+    "name": "koala",
+    "shortcode": "koala"
+  },
+  {
+    "glyph": "🐯",
+    "name": "tiger face",
+    "shortcode": "tiger"
+  },
+  {
+    "glyph": "🦁",
+    "name": "lion face",
+    "shortcode": "lion"
+  },
+  {
+    "glyph": "🐮",
+    "name": "cow face",
+    "shortcode": "cow"
+  },
+  {
+    "glyph": "🐷",
+    "name": "pig face",
+    "shortcode": "pig"
+  },
+  {
+    "glyph": "🐸",
+    "name": "frog face",
+    "shortcode": "frog"
+  },
+  {
+    "glyph": "🐵",
+    "name": "monkey face",
+    "shortcode": "monkey_face"
+  },
+  {
+    "glyph": "🐔",
+    "name": "chicken",
+    "shortcode": "chicken"
+  },
+  {
+    "glyph": "🐧",
+    "name": "penguin",
+    "shortcode": "penguin"
+  },
+  {
+    "glyph": "🐦",
+    "name": "bird",
+    "shortcode": "bird"
+  },
+  {
+    "glyph": "🦄",
+    "name": "unicorn face",
+    "shortcode": "unicorn"
+  },
+  {
+    "glyph": "🐝",
+    "name": "honeybee",
+    "shortcode": "bee"
+  },
+  {
+    "glyph": "🍎",
+    "name": "red apple",
+    "shortcode": "apple"
+  },
+  {
+    "glyph": "🍌",
+    "name": "banana",
+    "shortcode": "banana"
+  },
+  {
+    "glyph": "🍉",
+    "name": "watermelon",
+    "shortcode": "watermelon"
+  },
+  {
+    "glyph": "🍇",
+    "name": "grapes",
+    "shortcode": "grapes"
+  },
+  {
+    "glyph": "🍓",
+    "name": "strawberry",
+    "shortcode": "strawberry"
+  },
+  {
+    "glyph": "🍒",
+    "name": "cherries",
+    "shortcode": "cherries"
+  },
+  {
+    "glyph": "🍕",
+    "name": "pizza",
+    "shortcode": "pizza"
+  },
+  {
+    "glyph": "🍔",
+    "name": "hamburger",
+    "shortcode": "hamburger"
+  },
+  {
+    "glyph": "🍟",
+    "name": "french fries",
+    "shortcode": "fries"
+  },
+  {
+    "glyph": "🌭",
+    "name": "hot dog",
+    "shortcode": "hotdog"
+  },
+  {
+    "glyph": "🌮",
+    "name": "taco",
+    "shortcode": "taco"
+  },
+  {
+    "glyph": "🍣",
+    "name": "sushi",
+    "shortcode": "sushi"
+  },
+  {
+    "glyph": "🍦",
+    "name": "soft ice cream",
+    "shortcode": "ice_cream"
+  },
+  {
+    "glyph": "🍩",
+    "name": "doughnut",
+    "shortcode": "doughnut"
+  },
+  {
+    "glyph": "🍪",
+    "name": "cookie",
+    "shortcode": "cookie"
+  },
+  {
+    "glyph": "🎂",
+    "name": "birthday cake",
+    "shortcode": "birthday"
+  },
+  {
+    "glyph": "🍫",
+    "name": "chocolate bar",
+    "shortcode": "chocolate_bar"
+  },
+  {
+    "glyph": "🍿",
+    "name": "popcorn",
+    "shortcode": "popcorn"
+  },
+  {
+    "glyph": "🍺",
+    "name": "beer mug",
+    "shortcode": "beer"
+  },
+  {
+    "glyph": "☕",
+    "name": "hot beverage",
+    "shortcode": "coffee"
+  },
+  {
+    "glyph": "☀️",
+    "name": "sun",
+    "shortcode": "sunny"
+  },
+  {
+    "glyph": "⛅",
+    "name": "sun behind cloud",
+    "shortcode": "partly_sunny"
+  },
+  {
+    "glyph": "☁️",
+    "name": "cloud",
+    "shortcode": "cloud"
+  },
+  {
+    "glyph": "🌧️",
+    "name": "cloud with rain",
+    "shortcode": "cloud_rain"
+  },
+  {
+    "glyph": "⛈️",
+    "name": "cloud with lightning and rain",
+    "shortcode": "thunder_cloud_rain"
+  },
+  {
+    "glyph": "❄️",
+    "name": "snowflake",
+    "shortcode": "snowflake"
+  },
+  {
+    "glyph": "☃️",
+    "name": "snowman",
+    "shortcode": "snowman"
+  },
+  {
+    "glyph": "🌈",
+    "name": "rainbow",
+    "shortcode": "rainbow"
+  },
+  {
+    "glyph": "💧",
+    "name": "droplet",
+    "shortcode": "droplet"
+  },
+  {
+    "glyph": "🌊",
+    "name": "water wave",
+    "shortcode": "ocean"
+  },
+  {
+    "glyph": "🔥",
+    "name": "fire",
+    "shortcode": "fire"
+  },
+  {
+    "glyph": "⚡",
+    "name": "high voltage",
+    "shortcode": "zap"
+  },
+  {
+    "glyph": "📱",
+    "name": "mobile phone",
+    "shortcode": "phone"
+  },
+  {
+    "glyph": "💻",
+    "name": "laptop",
+    "shortcode": "computer"
+  },
+  {
+    "glyph": "⌨️",
+    "name": "keyboard",
+    "shortcode": "keyboard"
+  },
+  {
+    "glyph": "📷",
+    "name": "camera",
+    "shortcode": "camera"
+  },
+  {
+    "glyph": "🔋",
+    "name": "battery",
+    "shortcode": "battery"
+  },
+  {
+    "glyph": "💡",
+    "name": "light bulb",
+    "shortcode": "bulb"
+  },
+  {
+    "glyph": "🔑",
+    "name": "key",
+    "shortcode": "key"
+  },
+  {
+    "glyph": "🔒",
+    "name": "locked",
+    "shortcode": "lock"
+  },
+  {
+    "glyph": "✏️",
+    "name": "pencil",
+    "shortcode": "pencil"
+  },
+  {
+    "glyph": "📝",
+    "name": "memo",
+    "shortcode": "memo"
+  },
+  {
+    "glyph": "📖",
+    "name": "open book",
+    "shortcode": "book"
+  },
+  {
+    "glyph": "🎁",
+    "name": "wrapped gift",
+    "shortcode": "gift"
+  },
+  {
+    "glyph": "✅",
+    "name": "check mark button",
+    "shortcode": "check_mark"
+  },
+  {
+    "glyph": "❌",
+    "name": "cross mark",
+    "shortcode": "x"
+  },
+  {
+    "glyph": "⚠️",
+    "name": "warning",
+    "shortcode": "warning"
+  },
+  {
+    "glyph": "🔴",
+    "name": "red circle",
+    "shortcode": "red_circle"
+  },
+  {
+    "glyph": "♻️",
+    "name": "recycling symbol",
+    "shortcode": "recycle"
+  },
+  {
+    "glyph": "💯",
+    "name": "hundred points",
+    "shortcode": "hundred"
+  }
+]

@@ -10,6 +10,10 @@ hl.window_rule({ match = { class = "." }, no_blur = true })
 -- Disable shadow for tiled windows
 hl.window_rule({ match = { float = 0 }, no_shadow = true })
 
+-- Firefox reports a fixed-size hint on first map, which Hyprland
+-- auto-floats new windows for; force it back to tiled.
+hl.window_rule({ match = { class = "^(firefox)$" }, tile = true })
+
 ----------------------
 -- Floating Windows --
 ----------------------

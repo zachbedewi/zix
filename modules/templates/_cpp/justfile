@@ -1,0 +1,50 @@
+set shell := ["bash", "-euo", "pipefail", "-c"]
+
+preset := env("PRESET", "dev")
+
+[private]
+default:
+    @just --list --unsorted
+
+# configure the build directory for `preset` (dev or release)
+configure preset=preset:
+    cmake --preset {{ preset }}
+
+# build the project, configuring first if needed
+build preset=preset: (configure preset)
+    cmake --build --preset {{ preset }}
+
+# run the test suite
+test preset=preset: (build preset)
+    ctest --preset {{ preset }}
+
+# build and run the app binary
+run preset=preset *args: (build preset)
+    ./build/{{ preset }}/src/app/myproject {{ args }}
+
+# remove build output
+clean:
+    rm -rf build
+
+# format every file in the tree
+fmt:
+    treefmt
+
+# formatting, lint and pre-commit hooks
+check:
+    nix flake check
+
+# run every pre-commit hook over the whole tree
+lint:
+    pre-commit run --all-files
+
+# regenerate flake.nix from the flake-file.inputs declarations
+flake:
+    nix run .#write-flake
+
+# one-time rename of the "myproject" placeholder throughout the tree
+rename name:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    grep -rl 'myproject' --exclude-dir=.git --exclude-dir=build . | xargs sed -i "s/myproject/{{ name }}/g"
+    mv include/myproject include/{{ name }}

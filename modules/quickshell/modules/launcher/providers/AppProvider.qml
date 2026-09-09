@@ -9,7 +9,12 @@ import Deadfall.Launcher
 QtObject {
     id: root
 
-    property FuzzyMatcher matcher: FuzzyMatcher {}
+    property FuzzyMatcher matcher: FuzzyMatcher {
+    }
+
+    // Always-on: apps are the launcher's default mode, not gated behind a
+    // prefix.
+    readonly property string prefix: ""
 
     function query(text) {
         const apps = DesktopEntries.applications.values.filter(e => !e.noDisplay);
@@ -19,6 +24,7 @@ QtObject {
         return ranked.map(i => {
             const entry = apps[i];
             return {
+                id: `app:${entry.id}`,
                 title: entry.name,
                 subtitle: entry.comment.length > 0 ? entry.comment : entry.genericName,
                 icon: entry.icon,

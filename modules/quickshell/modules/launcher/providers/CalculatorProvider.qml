@@ -9,6 +9,10 @@ QtObject {
     // (property access, function calls, etc.) can reach the evaluator.
     readonly property var arithmeticPattern: /^[\d\s+\-*/().]+$/
 
+    // Always-on: calculator results are recognized by content (must look
+    // arithmetic), not by a prefix.
+    readonly property string prefix: ""
+
     function query(text) {
         const trimmed = text.trim();
         if (trimmed.length === 0 || !/\d/.test(trimmed) || !root.arithmeticPattern.test(trimmed)) {
@@ -22,7 +26,8 @@ QtObject {
             return [];
         }
 
-        if (typeof value !== "number" || !isFinite(value)) return [];
+        if (typeof value !== "number" || !isFinite(value))
+            return [];
 
         const display = String(value);
         return [

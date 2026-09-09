@@ -8,13 +8,12 @@ import qs.modules.theme
 Rectangle {
     id: root
 
-    color: Colors.surface
-    radius: 10
-    border.width: 1
     border.color: Colors.background
-
-    implicitWidth: 560
+    border.width: 1
+    color: Colors.surface
     implicitHeight: column.implicitHeight + 24
+    implicitWidth: 560
+    radius: 10
 
     Component.onCompleted: input.forceActiveFocus()
 
@@ -29,9 +28,9 @@ Rectangle {
             id: inputBox
 
             Layout.fillWidth: true
+            color: Colors.background
             implicitHeight: 40
             radius: 8
-            color: Colors.background
 
             TextInput {
                 id: input
@@ -43,40 +42,36 @@ Rectangle {
                 selectByMouse: true
                 text: LauncherController.queryText
 
-                onTextChanged: LauncherController.queryText = text
-
                 Keys.onDownPressed: LauncherController.moveSelection(1)
-                Keys.onUpPressed: LauncherController.moveSelection(-1)
+                Keys.onEscapePressed: LauncherController.cancelConfirmOrClose()
                 Keys.onReturnPressed: LauncherController.activateSelected()
-                Keys.onEscapePressed: LauncherController.close()
+                Keys.onUpPressed: LauncherController.moveSelection(-1)
+                onTextChanged: LauncherController.queryText = text
             }
-
             Text {
                 anchors.left: input.left
                 anchors.verticalCenter: input.verticalCenter
-                text: "Search apps, run a calculation…"
                 color: Colors.subtext
                 font.pixelSize: 15
+                text: LauncherController.placeholderHint
                 visible: input.text.length === 0
             }
         }
-
         ListView {
             id: resultList
 
             Layout.fillWidth: true
             Layout.preferredHeight: Math.min(contentHeight, 360)
             clip: true
-            spacing: 2
             model: LauncherController.results
+            spacing: 2
 
             delegate: LauncherResultDelegate {
                 required property var modelData
-                required property int index
 
-                width: resultList.width
                 resultData: modelData
                 selected: index === LauncherController.selectedIndex
+                width: resultList.width
             }
         }
     }
