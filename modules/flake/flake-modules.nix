@@ -12,20 +12,18 @@ let
     inherit inputs lib;
     inherit (self) overlays;
   };
-  mkFactory = import ../_lib/factory.nix;
 
   zixModules = config.flake.modules;
 
   # Re-export every zix module into the consumer's own `flake.modules`, so a
   # consumer writes `self.modules.darwin.desktop` rather than reaching through
-  # `inputs.zix.modules`. The helpers are rebound to the consumer's `self`, so
-  # they resolve against the merged set and need no explicit `modules` argument.
+  # `inputs.zix.modules`. The helper is rebound to the consumer's `self`, so
+  # it resolves against the merged set and needs no explicit `modules` argument.
   modules = { self, ... }: {
     flake.modules = zixModules;
 
     _module.args = {
       zix-lib = mkBuilders self.modules;
-      factory = mkFactory self.modules;
     };
   };
 

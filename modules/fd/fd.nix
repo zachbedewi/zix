@@ -1,7 +1,9 @@
 {
-  flake.modules.homeManager.fd = { pkgs, ... }: {
-    home = {
-      packages = [ pkgs.fd ];
+  flake.modules.homeManager.fd = {
+    programs.fd = {
+      enable = true;
+
+      ignores = [ ".git" ];
     };
   };
 }

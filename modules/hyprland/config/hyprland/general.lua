@@ -98,6 +98,7 @@ hl.config({
         preserve_split = true,
         smart_split = false,
         smart_resizing = false,
+        use_active_for_splits = true,
     },
 
     input = {

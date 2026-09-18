@@ -13,7 +13,7 @@
         home-manager
         sops
 
-        greetd
+        desktops
       ];
     };
 

@@ -5,6 +5,8 @@
         base
         fonts
         emacs
+
+        audio
       ];
     };
 
@@ -30,6 +32,8 @@
         sketchybar
         jankyborders
         keepass
+
+        audio
       ];
     };
   };

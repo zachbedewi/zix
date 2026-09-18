@@ -9,7 +9,6 @@ let
     inherit inputs lib;
     inherit (self) overlays;
   };
-  mkFactory = import ../_lib/factory.nix;
 in
 {
   options.flake = {
@@ -17,17 +16,11 @@ in
       type = lib.types.attrsOf lib.types.unspecified;
       default = { };
     };
-
-    factory = lib.mkOption {
-      type = lib.types.attrsOf lib.types.unspecified;
-      default = { };
-    };
   };
 
   config = {
     flake.zix-lib = mkBuilders self.modules;
-    flake.factory = mkFactory self.modules;
 
-    _module.args = { inherit (self) zix-lib factory; };
+    _module.args = { inherit (self) zix-lib; };
   };
 }

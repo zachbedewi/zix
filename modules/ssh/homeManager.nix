@@ -27,30 +27,40 @@ let
   '';
 in
 {
-  flake.modules.homeManager.ssh = { config, lib, ... }: {
-    config = lib.mkIf (config.zix.ssh.publicKey != null) {
-      zix.secrets.ssh_key = { };
+  flake.modules.homeManager =
+    lib.mapAttrs (
+      _: traits:
+      lib.optionalAttrs (traits.sshPublicKey or null != null) {
+        imports = [ self.modules.homeManager.ssh ];
+        zix.ssh.publicKey = traits.sshPublicKey;
+      }
+    ) self.users
+    // {
+      ssh = { config, lib, ... }: {
+        config = lib.mkIf (config.zix.ssh.publicKey != null) {
+          zix.secrets.ssh_key = { };
 
-      home.file = {
-        ".ssh/id_ed25519.pub".text = config.zix.ssh.publicKey + "\n";
-        ".ssh/authorized_keys".text = config.zix.ssh.publicKey + "\n";
-        ".ssh/known_hosts".text =
-          lib.concatStrings (lib.mapAttrsToList (name: publicKey: "${name} ${publicKey}\n") hostPublicKeys) + githubKnownHosts;
-      };
-
-      programs.ssh = {
-        enable = true;
-
-        settings =
-          (lib.mapAttrs (name: _: {
-            HostName = name;
-            IdentityFile = config.zix.secrets.ssh_key.path;
-          }) hostPublicKeys)
-          // {
-            "github.com".IdentityFile = config.zix.secrets.ssh_key.path;
-            "github.com".IdentitiesOnly = true;
+          home.file = {
+            ".ssh/id_ed25519.pub".text = config.zix.ssh.publicKey + "\n";
+            ".ssh/authorized_keys".text = config.zix.ssh.publicKey + "\n";
+            ".ssh/known_hosts".text =
+              lib.concatStrings (lib.mapAttrsToList (name: publicKey: "${name} ${publicKey}\n") hostPublicKeys) + githubKnownHosts;
           };
+
+          programs.ssh = {
+            enable = true;
+
+            settings =
+              (lib.mapAttrs (name: _: {
+                HostName = name;
+                IdentityFile = config.zix.secrets.ssh_key.path;
+              }) hostPublicKeys)
+              // {
+                "github.com".IdentityFile = config.zix.secrets.ssh_key.path;
+                "github.com".IdentitiesOnly = true;
+              };
+          };
+        };
       };
     };
-  };
 }

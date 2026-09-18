@@ -9,7 +9,7 @@
     let
       sessions = config.services.displayManager.sessionData.desktops;
     in
-    {
+    lib.mkIf (config.zix.greeter == "greetd") {
       services.greetd = {
         enable = true;
         useTextGreeter = true;
