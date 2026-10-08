@@ -1,8 +1,10 @@
 { inputs, self, ... }: {
-  perSystem = { pkgs, ... }: {
-    packages.deadfall = pkgs.callPackage ./_nix {
-      stdenv = pkgs.clangStdenv;
-      quickshell = inputs.quickshell.packages.${pkgs.system}.default;
+  perSystem = { lib, pkgs, ... }: {
+    packages = lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+      deadfall = pkgs.callPackage ./_nix {
+        stdenv = pkgs.clangStdenv;
+        quickshell = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      };
     };
 
     zix.dev.extraPackages = with pkgs; [
@@ -14,8 +16,8 @@
       qt6.qtdeclarative
     ];
 
-    zix.dev.extraShellHook = ''
-      export QUICKSHELL_QML_PATH="${inputs.quickshell.packages.${pkgs.system}.default}/lib/qt-6/qml"
+    zix.dev.extraShellHook = lib.optionalString pkgs.stdenv.hostPlatform.isLinux ''
+      export QUICKSHELL_QML_PATH="${inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default}/lib/qt-6/qml"
     '';
   };
 
@@ -28,7 +30,7 @@
     }:
     let
       cfg = config.zix.deadfall;
-      basePkg = self.packages.${pkgs.system}.deadfall;
+      basePkg = self.packages.${pkgs.stdenv.hostPlatform.system}.deadfall;
       # Same `deadfall` binary as the standalone package, just wrapped with
       # this user's execPath baked in instead of the store default — see
       # execPath's description for why that has to happen here rather than

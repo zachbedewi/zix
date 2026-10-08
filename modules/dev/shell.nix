@@ -48,12 +48,14 @@
             # keep-sorted start block=yes newline_separated=no
             age
             nh
-            quickshell
             shellcheck
             sops
             ssh-to-age
-            wayland
             # keep-sorted end
+          ]
+          ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
+            pkgs.quickshell
+            pkgs.wayland
           ]
           ++ [ config.formatter ]
           ++ config.zix.dev.extraPackages
